@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 public class CommentsListDTO {
 
-    @Schema(description = "Количество комментариев объявления")
-    private Long count;
+    @Schema(description = "общее количество комментариев")
+    private int count;
 
-    @Schema (description = "Список всех комментариев объявления")
+    @Schema (description = "список всех комментариев объявления")
     private List<CommentDTO> result;
 }

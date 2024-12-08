@@ -12,6 +12,7 @@ import javax.validation.constraints.*;
 public class UserDTO {
 
     @Schema(description = "id пользователя")
+    @NotNull
     private int id;
 
     @Schema (description = "логин пользователя")
