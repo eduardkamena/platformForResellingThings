@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS t_user
     c_lastname  VARCHAR(16)        NOT NULL,
     c_phone     VARCHAR(12) UNIQUE NOT NULL,
     c_role      VARCHAR(32)        NOT NULL,
-    c_image     TEXT,
+    c_image     INT,
 
     CONSTRAINT user_pk PRIMARY KEY (id),
 

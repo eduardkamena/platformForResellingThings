@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS t_announce
     id               SERIAL NOT NULL,
     c_author_id      INT    NOT NULL,
     c_description    VARCHAR(64),
-    c_announce_image TEXT,
+    c_announce_image INT,
     c_price          INT    NOT NULL,
     c_title          VARCHAR(32),
 
