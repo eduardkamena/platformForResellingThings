@@ -12,5 +12,7 @@ CREATE TABLE IF NOT EXISTS t_user
     c_role      VARCHAR(32)        NOT NULL,
     c_image     TEXT,
 
-    CONSTRAINT user_pk PRIMARY KEY (id)
+    CONSTRAINT user_pk PRIMARY KEY (id),
+
+    CONSTRAINT fk_user_image_id FOREIGN KEY (c_image) REFERENCES t_user_image (id)
 );
