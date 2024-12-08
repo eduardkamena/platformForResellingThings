@@ -32,7 +32,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(name = "c_image")
-    private String image;
+    @OneToOne
+    @JoinColumn(name = "c_image")
+    private UserImage image;
 
 }
