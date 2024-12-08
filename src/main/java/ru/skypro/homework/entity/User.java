@@ -13,6 +13,8 @@ public class User {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_user_id_seq")
+    @SequenceGenerator(name = "t_user_id_seq", sequenceName = "t_user_id_seq", allocationSize = 1)
     @Schema(description = "id пользователя")
     private int id;
 
