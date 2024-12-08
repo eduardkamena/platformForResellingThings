@@ -5,3 +5,7 @@ databaseChangeLog:
       file: liquibase/migration/announce_table.sql
   - include:
       file: liquibase/migration/comment_table.sql
+  - include:
+      file: liquibase/migration/user_image_table.sql
+  - include:
+      file: liquibase/migration/announce_image_table.sql
