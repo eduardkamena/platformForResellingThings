@@ -17,7 +17,7 @@ public class User {
     private int id;
 
     @Column(name = "c_username")
-    private String email;
+    private String username;
 
     @Column(name = "c_firstname")
     private String firstName;
