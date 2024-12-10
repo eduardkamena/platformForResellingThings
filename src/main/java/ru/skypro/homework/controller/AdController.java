@@ -31,19 +31,19 @@ public class AdController {
 
     @GetMapping(path = "/ads/{id}")
     @Operation(description = "Получение информации об объявлении")
-    public ResponseEntity<AdDTO> getAdById(@PathVariable Long id) {
+    public ResponseEntity<AdDTO> getAdById(@PathVariable Integer id) {
         return null;
     }
 
     @DeleteMapping(path = "/ads/{id}")
     @Operation(description = "Удаление объявления")
-    ResponseEntity<Void> deleteAdById(@PathVariable Long id) {
+    ResponseEntity<Void> deleteAdById(@PathVariable Integer id) {
         return null;
     }
 
     @PatchMapping(path = "/ads/{id}")
     @Operation(description = "Обновление  информации об объявлении")
-    ResponseEntity<AdDTO> updateAdById(@PathVariable Long id, @RequestBody AdDTO adDTO) {
+    ResponseEntity<AdDTO> updateAdById(@PathVariable Integer id, @RequestBody AdDTO adDTO) {
         return null;
     }
 
@@ -55,7 +55,7 @@ public class AdController {
 
     @PatchMapping(path = "/ads/{id}/image")
     @Operation(description = "Обновление картинки объявления")
-    ResponseEntity<String> updateImageOnAdById(@PathVariable Long id, @RequestBody AdDTO adDTO) {
+    ResponseEntity<String> updateImageOnAdById(@PathVariable Integer id, @RequestBody AdDTO adDTO) {
         return null;
     }
 
