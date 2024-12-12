@@ -12,7 +12,8 @@ import javax.validation.constraints.*;
 public class UserDTO {
 
     @Schema(description = "id пользователя")
-    @NotNull
+    @Null(groups = {Create.class})
+    @NotNull(groups = {Exist.class})
     private int id;
 
     @Schema (description = "логин пользователя")
@@ -52,5 +53,12 @@ public class UserDTO {
     private Role role;
 
     @Schema (description = "ссылка на аватар пользователя")
+    @Null(groups = {Create.class})
     private String image;
+
+    public interface Create{
+    }
+
+    public interface Exist{
+    }
 }
