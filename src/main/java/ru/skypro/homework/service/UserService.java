@@ -1,11 +1,14 @@
 package ru.skypro.homework.service;
 
-import ru.skypro.homework.entity.User;
+import ru.skypro.homework.dto.user.NewPasswordDTO;
+import ru.skypro.homework.dto.user.UserDTO;
 
 import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> findUserByUsername(String username);
+    UserDTO findUserByUsername(String username);
+
+    void changePassword(NewPasswordDTO newPasswordDTO, String username);
 
 }
