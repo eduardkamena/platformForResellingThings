@@ -22,4 +22,13 @@ public class Login {
     @Size(min = 8, max = 16,
             message = "Длина пароля должна быть от 8 до 16 символов")
     private String password;
+
+    public Login(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    public Login (){
+
+    }
+
 }
