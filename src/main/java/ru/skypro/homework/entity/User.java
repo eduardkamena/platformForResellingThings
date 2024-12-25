@@ -3,6 +3,7 @@ package ru.skypro.homework.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.Role;
 
@@ -13,8 +14,9 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "users")
-public class User {
+public class User extends ModelImage{
 
     @Id
     @Column(name = "id")

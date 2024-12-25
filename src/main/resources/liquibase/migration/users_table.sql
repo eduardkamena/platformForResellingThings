@@ -14,5 +14,5 @@ CREATE TABLE IF NOT EXISTS users(
 
     PRIMARY KEY (id),
 
-    FOREIGN KEY (image) REFERENCES images(id)
+    FOREIGN KEY (image) REFERENCES image(id)
 );
