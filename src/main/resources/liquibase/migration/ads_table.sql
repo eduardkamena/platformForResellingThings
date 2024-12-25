@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS ads(
     PRIMARY KEY (id),
 
     FOREIGN KEY (author_id) REFERENCES users(id),
-    FOREIGN KEY (image_id) REFERENCES image(id)
+    FOREIGN KEY (image_id) REFERENCES images(id)
 );
