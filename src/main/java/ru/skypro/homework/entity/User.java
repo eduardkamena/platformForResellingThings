@@ -1,42 +1,55 @@
 package ru.skypro.homework.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Data
-@Table(name = "t_user")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_user_id_seq")
-    @SequenceGenerator(name = "t_user_id_seq", sequenceName = "t_user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "USER_ID_SEQ", allocationSize = 1)
     private int id;
 
-    @Column(name = "c_username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "c_password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "c_firstname")
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "c_lastname")
+    @Column(name = "lastName")
     private String lastName;
 
-    @Column(name = "c_phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "c_role")
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "c_image")
-    private UserImage image;
+    @JsonIgnore
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @OneToMany(mappedBy = "author")
+    private Collection<Ad> ads;
+
+    @OneToMany(mappedBy = "author")
+    private Collection<Comment> comments;
 
 }

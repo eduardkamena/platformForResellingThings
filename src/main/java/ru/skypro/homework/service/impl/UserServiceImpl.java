@@ -9,7 +9,6 @@ import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
-import ru.skypro.homework.repository.UserImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -18,7 +17,6 @@ import ru.skypro.homework.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserImageRepository userImageRepository;
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

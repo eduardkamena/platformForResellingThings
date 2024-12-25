@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.announce.AdDTO;
 import ru.skypro.homework.dto.announce.AdsDTO;
-import ru.skypro.homework.service.AdImageService;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.AdService;
 
 @RestController
@@ -15,7 +15,7 @@ import ru.skypro.homework.service.AdService;
 @RequiredArgsConstructor
 public class AdController {
     private final AdService adService;
-    private final AdImageService adImageService;
+    private final ImageService imageService;
 
     @GetMapping(path = "/ads")
     @Operation(description = "Получение всех объявлений")
