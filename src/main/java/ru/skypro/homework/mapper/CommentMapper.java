@@ -18,7 +18,7 @@ public class CommentMapper {
     public CommentDTO mapToCommentDto(Comment entity) {
         CommentDTO dto = new CommentDTO();
         dto.setAuthor(entity.getAuthor().getId());
-        dto.setAuthorImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getAuthor().getPhoto().getId());
+        dto.setAuthorImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getAuthor().getImage().getId());
         dto.setAuthorFirstName(entity.getAuthor().getFirstName());
         dto.setCreatedAt(entity.getCreatedAt());
         dto.setPk(entity.getId());

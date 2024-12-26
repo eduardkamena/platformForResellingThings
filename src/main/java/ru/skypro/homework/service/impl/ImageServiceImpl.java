@@ -34,24 +34,24 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public ModelImage updateEntitiesPhoto(MultipartFile image, ModelImage entity) throws IOException {
         //если у сущности уже есть картинка, то нужно ее удалить
-        if (entity.getPhoto() != null) {
-            imageRepository.delete(entity.getPhoto());
+        if (entity.getImage() != null) {
+            imageRepository.delete(entity.getImage());
         }
 
         //заполняем поля photo и сохраняем фото в БД
         Image photoEntity = userMapper.mapMultipartFileToImage(image);
         log.info("Создана сущность photoEntity - {}", photoEntity);
-        entity.setPhoto(photoEntity);
+        entity.setImage(photoEntity);
         assert photoEntity != null;
         imageRepository.save(photoEntity);
 
         //адрес до директории хранения фото на ПК
-        Path filePath = Path.of(photoDir, entity.getPhoto().getId() + "."
+        Path filePath = Path.of(photoDir, entity.getImage().getId() + "."
                 + this.getExtension(Objects.requireNonNull(image.getOriginalFilename())));
         log.info("путь к файлу для хранения фото на ПК: {}", filePath);
 
         //добавляем в сущность фото путь где оно хранится на ПК
-        entity.getPhoto().setFilePath(filePath.toString());
+        entity.getImage().setFilePath(filePath.toString());
 
         //добавляем в сущность путь на ПК
         entity.setFilePath(filePath.toString());

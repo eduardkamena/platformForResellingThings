@@ -88,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setAuthor(author.getId());
 
-        Integer avatarId = author.getPhoto().getId();
+        Integer avatarId = author.getImage().getId();
         log.info("id автора комментария - {}", author.getId());
         log.info("URL для получения аватара автора комментария: /photo/image/{}", avatarId);
         commentDTO.setAuthorImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + avatarId);

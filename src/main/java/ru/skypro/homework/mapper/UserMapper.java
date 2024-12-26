@@ -52,7 +52,7 @@ public class UserMapper {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhone(entity.getPhone());
-        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getPhoto().getId());
+        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getImage().getId());
         return dto;
     }
 
@@ -77,16 +77,16 @@ public class UserMapper {
     public Image mapMultipartFileToImage(MultipartFile image) {
 
         log.info("Запущен метод сервиса {}", loggingMethod.getMethodName());
-        Image photo = new Image();
+        Image entity = new Image();
         try {
-            photo.setData(image.getBytes());
-            photo.setMediaType(image.getContentType());
-            photo.setFileSize(image.getSize());
+            entity.setData(image.getBytes());
+            entity.setMediaType(image.getContentType());
+            entity.setFileSize(image.getSize());
         } catch (IOException e) {
             throw new RuntimeException("Ошибка конвертации MultipartFile в PhotoEntity, " +
                     "место ошибки - userMapper.mapMultiPartFileToPhoto()");
         }
-        return photo;
+        return entity;
     }
 
 }

@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class ModelImage {
 
-    private Image photo;
+    private Image image;
     private String filePath; //путь на ПК
-    private String image; //URL для контроллера
+    private String imagePath; //URL для контроллера
 
 }
