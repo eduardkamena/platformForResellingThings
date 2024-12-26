@@ -10,7 +10,6 @@ import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
-import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.io.IOException;
@@ -20,9 +19,6 @@ import java.io.IOException;
 public class AdMapper {
 
     private final UserRepository userRepository;
-    private final ImageRepository imageRepository;
-
-    public final String URL_PHOTO_CONSTANT = "/photo/image/";
 
     /**
      * Entity -> DTO mapping
@@ -33,7 +29,7 @@ public class AdMapper {
     public AdDTO mapToAdDto(Ad entity) {
         AdDTO dto = new AdDTO();
         dto.setAuthor(entity.getAuthor().getId());
-        dto.setImage(URL_PHOTO_CONSTANT + entity.getImage().getId());
+        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getImage().getId());
         dto.setPk(entity.getId());
         dto.setPrice(entity.getPrice());
         dto.setTitle(entity.getTitle());
@@ -73,7 +69,7 @@ public class AdMapper {
         dto.setAuthorLastName(entity.getAuthor().getLastName());
         dto.setDescription(entity.getDescription());
         dto.setEmail(entity.getAuthor().getUsername());
-        dto.setImage(URL_PHOTO_CONSTANT + entity.getImage().getId());
+        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getImage().getId());
         dto.setPhone(entity.getAuthor().getPhone());
         dto.setPrice(entity.getPrice());
         dto.setTitle(entity.getTitle());

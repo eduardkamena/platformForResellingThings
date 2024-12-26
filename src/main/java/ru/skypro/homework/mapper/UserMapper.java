@@ -1,26 +1,92 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.Register;
+import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.service.LoggingMethod;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface UserMapper {
+import java.io.IOException;
 
+/**
+ * Класс конвертирует одни сущности, связанные с пользователем, в другие
+ */
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class UserMapper {
 
-    @Mapping(target = "username", source = "email")
-    @Mapping(target = "image", ignore = true)
-    User toUserEntity(UserDTO userDTO);
+    private final LoggingMethod loggingMethod;
 
-    @Mapping(target = "email", source = "username")
-    @Mapping(target = "image", ignore = true)
-    UserDTO toUserDTO(User user);
+    /**
+     * {@link Register} -> {@link User}
+     * @param dto {@link Register}
+     * @return entity class {@link User}
+     */
+    public static User mapFromRegisterToUserEntity(Register dto) {
+        User entity = new User();
+        entity.setUsername(dto.getUsername());
+        entity.setPassword(dto.getPassword());
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setPhone(dto.getPhone());
+        entity.setRole(dto.getRole());
+        return entity;
 
-    User fromRegisterToUser(Register register);
+    }
+
+    /**
+     * {@link User} -> {@link UserDTO}
+     * @param entity {@link User}
+     * @return dto class {@link UserDTO}
+     */
+    public static UserDTO mapFromUserEntityToUserDTO(User entity) {
+        UserDTO dto = new UserDTO();
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getUsername());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getPhoto().getId());
+        return dto;
+    }
+
+    /**
+     * {@link User} -> {@link UpdateUserDTO}
+     * @param entity {@link User}
+     * @return dto class {@link UpdateUserDTO}
+     */
+    public static UpdateUserDTO mapFromUserEntityToUpdateUserDTO(User entity) {
+        UpdateUserDTO dto = new UpdateUserDTO();
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        return dto;
+    }
+
+    /**
+     * {@link MultipartFile} -> {@link Image}
+     * @param image {@link MultipartFile}
+     * @return {@link Image}
+     */
+    public Image mapMultipartFileToImage(MultipartFile image) {
+
+        log.info("Запущен метод сервиса {}", loggingMethod.getMethodName());
+        Image photo = new Image();
+        try {
+            photo.setData(image.getBytes());
+            photo.setMediaType(image.getContentType());
+            photo.setFileSize(image.getSize());
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка конвертации MultipartFile в PhotoEntity, " +
+                    "место ошибки - userMapper.mapMultiPartFileToPhoto()");
+        }
+        return photo;
+    }
+
 }
-

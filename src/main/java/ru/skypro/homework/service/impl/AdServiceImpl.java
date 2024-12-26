@@ -197,7 +197,7 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public boolean isAuthorAd(String username, Integer id) {
+    public boolean isAuthorsAd(String username, Integer id) {
         log.info("Использован метод сервиса: {}", loggingMethod.getMethodName());
 
         Ad adEntity = adRepository.findById(id).orElseThrow(RuntimeException::new);

@@ -9,7 +9,7 @@ import ru.skypro.homework.config.CustomUserDetails;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
-import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.mapper.UserMapperInterface;
 import ru.skypro.homework.repository.UserRepository;
 
 @Service
@@ -17,13 +17,13 @@ import ru.skypro.homework.repository.UserRepository;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserMapperInterface userMapperInterface;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return new CustomUserDetails(userRepository.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new));
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + username)));
     }
 
     public boolean userExists(String username) {
@@ -33,8 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public void createUser(Register register, String password) {
-        User user = userMapper.fromRegisterToUser(register);
+        User user = userMapperInterface.fromRegisterToUser(register);
         user.setPassword(password);
         userRepository.save(user);
     }
+
 }

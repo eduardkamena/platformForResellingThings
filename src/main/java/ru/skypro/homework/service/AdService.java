@@ -25,6 +25,6 @@ public interface AdService {
 
     void updateImageOnAdById(Integer id, MultipartFile image) throws IOException;
 
-    boolean isAuthorAd(String username, Integer id);
+    boolean isAuthorsAd(String username, Integer id);
 
 }

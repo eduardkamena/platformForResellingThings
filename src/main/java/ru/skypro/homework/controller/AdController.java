@@ -27,7 +27,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/ads")
-
 public class AdController {
 
     private final AdService adService;

@@ -24,7 +24,7 @@ public class Comment {
     private String text;
 
     @Column(name = "dateTime")
-    private LocalDateTime createdAt;
+    private Long createdAt;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
