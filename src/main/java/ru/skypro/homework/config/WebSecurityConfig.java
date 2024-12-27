@@ -22,9 +22,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebSecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
             "/swagger-ui.html",
@@ -37,17 +34,9 @@ public class WebSecurityConfig {
     };
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf()
+                .disable()
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
@@ -55,22 +44,10 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors()
+                .and()
                 .httpBasic(withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     @Bean
