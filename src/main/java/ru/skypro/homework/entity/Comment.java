@@ -24,7 +24,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "dateTime")
+    @Column(name = "date_time")
     private Long createdAt;
 
     @ManyToOne

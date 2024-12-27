@@ -45,4 +45,6 @@ public class Ad extends ModelImage {
             orphanRemoval = true, fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
+    //private String filePath; //путь на ПК
+
 }

@@ -4,10 +4,10 @@
 CREATE TABLE IF NOT EXISTS images(
 
     id SERIAL NOT NULL,
-    file_path TEXT NOT NULL,
-    file_size BIGINT NOT NULL,
-    media_type TEXT NOT NULL,
-    byte_data BIGINT NOT NULL,
+    file_path TEXT,
+    file_size BIGINT,
+    media_type TEXT,
+    byte_data BIGINT,
 
     PRIMARY KEY (id)
 );

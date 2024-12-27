@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS comments(
 
     id SERIAL NOT NULL,
     text VARCHAR(32) NOT NULL,
-    dateTime BIGINT,
+    date_time BIGINT,
     author_id INT NOT NULL,
     ad_id INT NOT NULL,
 

@@ -13,7 +13,7 @@ public interface ImageService {
 
     boolean saveFileOnDisk(MultipartFile image, Path filePath) throws IOException;
 
-    byte[] getPhotoFromDisk(Image photo) throws NoSuchFieldException;
+    byte[] getPhotoFromDisk(Image image) throws NoSuchFieldException;
 
     String getExtension(String fileName);
 

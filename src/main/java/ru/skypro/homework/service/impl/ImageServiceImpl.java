@@ -87,8 +87,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public byte[] getPhotoFromDisk(Image photo) throws NoSuchFieldException {
-        Path path1 = Path.of(photo.getFilePath());
+    public byte[] getPhotoFromDisk(Image image) throws NoSuchFieldException {
+        Path path1 = Path.of(image.getFilePath());
         try {
             return Files.readAllBytes(path1);
         } catch (IOException e) {

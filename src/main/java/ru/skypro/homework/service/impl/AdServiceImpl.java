@@ -51,7 +51,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsDTO getAllAds() {
         List<AdDTO> dto = adRepository.findAll().stream()
-                .map(adMapper::mapToAdDto)
+                .map(entity -> adMapper.mapToAdDto(entity))
                 .collect(Collectors.toList());
         return new AdsDTO(dto.size(), dto);
     }

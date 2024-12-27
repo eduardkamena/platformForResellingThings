@@ -55,4 +55,6 @@ public class User extends ModelImage{
     @OneToMany(mappedBy = "author")
     private Collection<Comment> comments;
 
+    //private String filePath; //путь на ПК
+
 }

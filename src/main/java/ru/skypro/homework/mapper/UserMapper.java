@@ -52,7 +52,12 @@ public class UserMapper {
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPhone(entity.getPhone());
-        dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getImage().getId());
+        // Проверка image на null
+        if (entity.getImage() != null) {
+            dto.setImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getImage().getId());
+        } else {
+            dto.setImage(null);
+        }
         return dto;
     }
 
