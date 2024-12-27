@@ -40,9 +40,8 @@ public class ImageServiceImpl implements ImageService {
 
         //заполняем поля photo и сохраняем фото в БД
         Image photoEntity = userMapper.mapMultipartFileToImage(image);
-        log.info("Создана сущность photoEntity - {}", photoEntity);
+        log.info("Создана сущность photoEntity - {}, {}, {}", photoEntity.getId(), photoEntity.getMediaType(), photoEntity.getFilePath());
         entity.setImage(photoEntity);
-        assert photoEntity != null;
         imageRepository.save(photoEntity);
 
         //адрес до директории хранения фото на ПК
