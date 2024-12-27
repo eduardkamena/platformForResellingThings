@@ -43,6 +43,6 @@ public class Register {
 
     @Schema(description = "роль пользователя")
     @Enumerated(EnumType.STRING)
-    @NotBlank (message = "Должна быть определена роль пользователя")
+    @NotNull (message = "Должна быть определена роль пользователя")
     private Role role;
 }

@@ -45,7 +45,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf().disable()
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
@@ -53,6 +53,7 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(withDefaults());
         return http.build();
     }

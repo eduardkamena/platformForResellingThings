@@ -19,8 +19,9 @@ public class Ad extends ModelImage {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ads_seq")
-    @SequenceGenerator(name = "ads_seq", sequenceName = "ADS_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ads_id_seq")
+//    @SequenceGenerator(name = "ads_id_seq", sequenceName = "ADS_ID_SEQ", allocationSize = 1)
     private int id;
 
     @Column(name = "title")
