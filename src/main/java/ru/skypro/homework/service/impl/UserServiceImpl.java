@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
     public void uploadImage(User user, MultipartFile file) throws IOException {
         Path path = Path.of(imagePath, user.getUsername() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename()));
 
+
         Files.createDirectories(path.getParent());
         Files.deleteIfExists(path);
 
@@ -131,12 +132,12 @@ public class UserServiceImpl implements UserService {
             userImage.setFilePath(path.toString());
             userImage.setFileSize(file.getSize());
             userImage.setMediaType(file.getContentType());
-            userImage.setData(file.getBytes()); // Устанавливаем данные файла
+            userImage.setSize(file.getSize());
 
-            // Сохраняем объект Image в репозитории
+            // Сохраняем объект Image
             userImage = imageRepository.save(userImage);
 
-            // Связываем сохраненный объект Image с пользователем
+            // Устанавливаем Image пользователю
             user.setImage(userImage);
 
             // Сохраняем пользователя

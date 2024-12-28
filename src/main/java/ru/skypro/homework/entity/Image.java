@@ -27,9 +27,7 @@ public class Image {
     @Column(name = "media_type")
     private String mediaType;
 
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
     @Column(name = "byte_data")
-    private byte[] data;
+    private Long size;
 
 }

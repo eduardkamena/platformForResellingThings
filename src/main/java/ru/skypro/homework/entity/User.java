@@ -47,7 +47,7 @@ public class User{
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     @JoinColumn(name = "image_id")
-    //@Value("${path.to.user.images}")
+    @Value("${path.to.user.images}")
     private Image image;
 
     @OneToMany(mappedBy = "author")
