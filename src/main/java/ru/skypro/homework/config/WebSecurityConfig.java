@@ -44,8 +44,7 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
-                .cors()
-                .and()
+ repos-services-controllers
                 .httpBasic(withDefaults());
         return http.build();
     }
