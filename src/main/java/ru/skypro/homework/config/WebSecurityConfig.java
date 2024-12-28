@@ -31,7 +31,9 @@ public class WebSecurityConfig {
             "/v3/api-docs",
             "/webjars/**",
             "/login",
-            "/register"
+            "/register",
+            "/ads",
+            "/photo/**"
     };
 
     @Bean
@@ -54,8 +56,7 @@ public class WebSecurityConfig {
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-//                .cors()
-//                .and()
+repos-services-controllers
                 .httpBasic(withDefaults());
         return http.build();
     }
