@@ -57,7 +57,9 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-        userMapper.updateUserFromUserDto(userDto, user);
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhone(userDto.getPhone());
         userRepository.save(user);
         log.trace("User updated");
         return userMapper.toUserDto(user);
