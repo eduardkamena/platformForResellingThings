@@ -73,13 +73,15 @@ public class AdController {
             }
     )
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<AdDTO> createAd(@RequestPart(value = "properties", required = false)
-                                          CreateOrUpdateAdDTO properties,
-                                          @RequestPart("image") MultipartFile image,
-                                          Authentication authentication) throws IOException {
+    public ResponseEntity<AdDTO> addAd(@RequestPart(value = "properties", required = false)
+                                       CreateOrUpdateAdDTO properties,
+                                       @RequestPart("image") MultipartFile image,
+                                       Authentication authentication) throws IOException {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
-        return ResponseEntity.ok(adService.createAd(properties, image, authentication));
+        log.info("Полученные данные properties: {}", properties);
+        log.info("Полученный файл image: {}", image.getOriginalFilename());
+        return ResponseEntity.status(HttpStatus.CREATED).body(adService.createAd(properties, image, authentication));
     }
 
     @Operation(
@@ -104,7 +106,7 @@ public class AdController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDTO> getAdById(@PathVariable("id") Integer id) {
+    public ResponseEntity<ExtendedAdDTO> getAds(@PathVariable("id") Integer id) {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
         ExtendedAdDTO ad = adService.getAdById(id);
@@ -144,7 +146,7 @@ public class AdController {
     )
     @DeleteMapping("/{id}")
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<Void> deleteAdById(@PathVariable("id") Integer id) throws IOException {
+    public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id) throws IOException {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
         return (adService.deleteAdById(id))
@@ -183,7 +185,7 @@ public class AdController {
     )
     @PatchMapping("/{id}")
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<AdDTO> updateAdById(@PathVariable("id") Integer id,
+    public ResponseEntity<AdDTO> updateAds(@PathVariable("id") Integer id,
                                               @RequestBody CreateOrUpdateAdDTO dto) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
@@ -217,7 +219,7 @@ public class AdController {
             }
     )
     @GetMapping("/me")
-    public ResponseEntity<AdsDTO> getCurrentUserAds(Authentication authentication) {
+    public ResponseEntity<AdsDTO> getAdsMe(Authentication authentication) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
 
@@ -261,7 +263,7 @@ public class AdController {
     )
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<Void> updateImageOnAdById(@PathVariable("id") Integer id,
+    public ResponseEntity<Void> updateImage(@PathVariable("id") Integer id,
                                                     @RequestPart MultipartFile image,
                                                     Authentication authentication) throws IOException {
 

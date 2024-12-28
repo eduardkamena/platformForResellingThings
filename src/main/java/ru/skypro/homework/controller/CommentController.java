@@ -57,7 +57,7 @@ public class CommentController {
             }
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> getCommentsByAdId(@PathVariable("id") Integer id,
+    public ResponseEntity<CommentsDTO> getComments(@PathVariable("id") Integer id,
                                                          Authentication authentication) {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
@@ -93,7 +93,7 @@ public class CommentController {
             }
     )
     @PostMapping(value = "/{id}/comments")
-    public ResponseEntity<CommentDTO> createCommentToAdById(@PathVariable("id") Integer id,
+    public ResponseEntity<CommentDTO> addComment(@PathVariable("id") Integer id,
                                                             @RequestBody CreateOrUpdateCommentDTO newComment,
                                                             Authentication authentication) {
 
@@ -129,7 +129,7 @@ public class CommentController {
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #adId)")
-    public ResponseEntity<Void> deleteCommentFromAd(@PathVariable("adId") Integer adId,
+    public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
                                                     @PathVariable("commentId") Integer commentId,
                                                     Authentication authentication) {
 

@@ -60,7 +60,7 @@ public class UserController {
             }
     )
     @PostMapping("/set_password") // http://localhost:8080/users/set_password
-    public ResponseEntity setPassword(@RequestBody NewPasswordDTO newPass, Authentication authentication) {
+    public ResponseEntity<Void> setPassword(@RequestBody NewPasswordDTO newPass, Authentication authentication) {
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
         userService.setPassword(newPass, authentication);
         return ResponseEntity.ok().build();
