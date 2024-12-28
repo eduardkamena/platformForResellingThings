@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 
 @Data
-public class CreateOrUpdateAdDTO {
+public class CreateAds {
 
     @Schema(description = "заголовок объявления")
     @NotBlank(message = "Должен быть указан заголовок")

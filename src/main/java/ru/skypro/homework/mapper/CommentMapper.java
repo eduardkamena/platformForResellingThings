@@ -1,29 +1,30 @@
 package ru.skypro.homework.mapper;
 
-import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.comment.CommentDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import ru.skypro.homework.dto.comment.CommentDto;
+import ru.skypro.homework.dto.comment.CreateComment;
 import ru.skypro.homework.entity.Comment;
 
-import java.time.ZoneOffset;
+import java.util.List;
 
-@Service
-public class CommentMapper {
+@Mapper(componentModel = "spring")
+public interface CommentMapper {
 
-    /**
-     * Entity -> DTO mapping
-     *
-     * @param entity input entity class
-     * @return DTO class
-     */
-    public CommentDTO mapToCommentDto(Comment entity) {
-        CommentDTO dto = new CommentDTO();
-        dto.setAuthor(entity.getAuthor().getId());
-        dto.setAuthorImage(URLPhotoEnum.URL_PHOTO_CONSTANT.getString() + entity.getAuthor().getImage().getId());
-        dto.setAuthorFirstName(entity.getAuthor().getFirstName());
-        dto.setCreatedAt(entity.getCreatedAt());
-        dto.setPk(entity.getId());
-        dto.setText(entity.getText());
-        return dto;
-    }
+    List<CommentDto> toListDto(List<Comment> commentList);
+
+    Comment toCommentFromCreateComment(CreateComment createComment);
+
+    @Mapping(target = "author", source = "user.id")
+    @Mapping(target = "authorImage", source = "user.image")
+    @Mapping(target = "authorFirstName", source = "user.firstName")
+    @Mapping(target = "pk", source = "id")
+    CommentDto toCommentDtoFromComment(Comment comment);
+
+    @Mapping(target = "user.id", ignore = true)
+    @Mapping(target = "user.image",ignore = true)
+    @Mapping(target = "user.firstName",ignore = true)
+    void updateCommentFromCommentDto(CommentDto commentDto,@MappingTarget Comment comment);
 
 }

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class NewPasswordDTO {
+public class NewPassword {
 
     @NotBlank(message = "Пароль не может быть пустым")
     @Size(min = 8, max = 16,

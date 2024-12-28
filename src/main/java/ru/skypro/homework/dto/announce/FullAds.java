@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ExtendedAdDTO {
+public class FullAds {
 
     @Schema(description = "id объявления")
     @NotNull

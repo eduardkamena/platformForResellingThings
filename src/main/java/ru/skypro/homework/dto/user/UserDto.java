@@ -9,11 +9,9 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 
 @Data
-public class UserDTO {
+public class UserDto {
 
     @Schema(description = "id пользователя")
-    @Null(groups = {Create.class})
-    @NotNull(groups = {Exist.class})
     private int id;
 
     @Schema (description = "логин пользователя")
@@ -23,11 +21,11 @@ public class UserDTO {
     @Email(message = "Email адрес должен быть в формате user@example.com")
     private String email;
 
-    @Schema (description = "пароль пользователя")
-    @NotBlank(message = "Пароль не может быть пустым")
-    @Size(min = 8, max = 16,
-            message = "Длина пароля должна быть от 8 до 16 символов")
-    private String password;
+//    @Schema (description = "пароль пользователя")
+//    @NotBlank(message = "Пароль не может быть пустым")
+//    @Size(min = 8, max = 16,
+//            message = "Длина пароля должна быть от 8 до 16 символов")
+//    private String password;
 
     @Schema (description = "имя пользователя")
     @NotBlank(message = "Имя должно быть указано")
@@ -47,18 +45,12 @@ public class UserDTO {
             ,message = "Телефон должен начинаться с +7 и продолжаться 10 числами")
     private String phone;
 
-    @Schema(description = "роль пользователя")
-    @Enumerated(EnumType.STRING)
-    @NotBlank (message = "Должна быть определена роль пользователя")
-    private Role role;
+//    @Schema(description = "роль пользователя")
+//    @Enumerated(EnumType.STRING)
+//    @NotBlank (message = "Должна быть определена роль пользователя")
+//    private Role role;
 
     @Schema (description = "ссылка на аватар пользователя")
-    @Null(groups = {Create.class})
     private String image;
 
-    public interface Create{
-    }
-
-    public interface Exist{
-    }
 }

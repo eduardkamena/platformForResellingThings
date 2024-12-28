@@ -1,20 +1,64 @@
 package ru.skypro.homework.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.entity.ModelImage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 
-public interface ImageService {
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class ImageService {
 
-    ModelImage updateEntitiesPhoto(MultipartFile image, ModelImage entity) throws IOException;
+    @Value("${image.dir.path}")
+    private String imageDir;
 
-    boolean saveFileOnDisk(MultipartFile image, Path filePath) throws IOException;
+    public String saveImage(MultipartFile image, String name) {
 
-    byte[] getPhotoFromDisk(Image image) throws NoSuchFieldException;
+        String extension = StringUtils.getFilenameExtension(image.getOriginalFilename());
+        String filename = UUID.randomUUID() + "." + extension;
+        Path filePath = Path.of(imageDir, filename);
+        try {
+            Files.write(filePath, image.getBytes());
+        } catch (IOException e) {
+            log.error("Error writing file: {}", e.getMessage());
+            throw new RuntimeException("Error writing file", e);
+        }
+        log.trace("Loaded file, name: ", filename);
+        return name + "/image/" + filename;
+    }
 
-    String getExtension(String fileName);
+    public byte[] getImage(String name) throws IOException {
+        String fullPath = imageDir + "/" + name;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            return Files.readAllBytes(Path.of(fullPath));
+        }
+        return null;
+    }
 
+    public void deleteFileIfNotNull(String path) {
+        if (path == null) {
+            return;
+        }
+        String fileName = path.substring(path.lastIndexOf('/'));
+        File fileToDelete = new File(imageDir + fileName);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                log.trace("File successfully deleted");
+            } else {
+                log.trace("Failed to delete file");
+            }
+        } else {
+            log.trace("File not found");
+        }
+    }
 }

@@ -5,32 +5,33 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "comments")
-public class Comment {
+@Table(name = "ads")
+public class Ads{
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "text")
-    private String text;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "date_time")
-    private LocalDateTime createdAt;
+    @Column(name = "price")
+    private Integer price;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ads_id")
-    private Ads ads;
+    @Column(name = "image")
+    private String image;
 
 }
