@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserDetailsServiceImpl userDetailsService;
     private final LoggingMethod loggingMethod;
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder encoder;
 
     /**
      * Метод авторизации проверяет, существует ли в базе данных пользователь с
@@ -47,11 +47,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean login(String userName, String password) {
         log.info("Запущен метод сервиса {}", loggingMethod.getMethodName());
-
-        if (!userDetailsService.userExists(userName)) {
-            // может вместо false выбросить исключение UsernameNotFoundException ?
-            return false;
-        }
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         if (!encoder.matches(password, userDetails.getPassword())) {
             throw new WrongPasswordException("Неверный пароль");

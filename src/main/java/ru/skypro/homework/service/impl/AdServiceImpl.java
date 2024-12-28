@@ -173,7 +173,7 @@ public class AdServiceImpl implements AdService {
         log.info("объект UserEntity получен из БД");
 
         List<AdDTO> ads = adRepository.findByAuthor(author).stream()
-                .map(adMapper::mapToAdDto)
+                .map(ad -> adMapper.mapToAdDto(ad))
                 .collect(Collectors.toList());
         log.info("Получен список объявлений пользователя ads");
 

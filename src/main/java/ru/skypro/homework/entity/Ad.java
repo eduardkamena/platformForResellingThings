@@ -42,7 +42,7 @@ public class Ad extends ModelImage {
     private Image image;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.EAGER)
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
     //private String filePath; //путь на ПК

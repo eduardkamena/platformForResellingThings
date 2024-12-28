@@ -34,60 +34,41 @@ public class UserController {
     private final LoggingMethod loggingMethod;
 
     @Operation(
-            tags = "Пользователи",
-            summary = "Обновление пароля",
+            summary = "Обновление пароля", tags = "Пользователи",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Пароль обновлен",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Пользователь не авторизован (unauthorized)",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Доступ запрещен (forbidden)",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Пользователь не найден (not found)",
-                            content = @Content()
-                    )
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content()),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @PostMapping("/set_password") // http://localhost:8080/users/set_password
-    public ResponseEntity setPassword(@RequestBody NewPasswordDTO newPass, Authentication authentication) {
+    public ResponseEntity<Void> setPassword(@RequestBody @Valid NewPasswordDTO newPass,
+                                            Authentication authentication) {
+
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         userService.setPassword(newPass, authentication);
         return ResponseEntity.ok().build();
     }
 
     @Operation(
-            tags = "Пользователи",
-            summary = "Получение информации об авторизованном пользователе",
+            summary = "Получение информации об авторизованном пользователе", tags = "Пользователи",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Пользователь найден",
+                    @ApiResponse(responseCode = "200", description = "Пользователь найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = UserDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Пользователь не авторизован (unauthorized)",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = UserDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @GetMapping("/me") // http://localhost:8080/users/me
     public ResponseEntity<UserDTO> getUser(Authentication authentication) {
+
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         User user = userService.getUser(authentication.getName());
         if (user != null) {
             return ResponseEntity.ok(UserMapper.mapFromUserEntityToUserDTO(user));
@@ -97,27 +78,21 @@ public class UserController {
     }
 
     @Operation(
-            tags = "Пользователи",
-            summary = "Обновление информации об авторизованном пользователе",
+            summary = "Обновление информации об авторизованном пользователе", tags = "Пользователи",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Пользователь найден",
+                    @ApiResponse(responseCode = "200", description = "Пользователь найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = UpdateUserDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Пользователь не авторизован (unauthorized)",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = UpdateUserDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
             }
     )
     @PatchMapping("/me") // http://localhost:8080/users/me
-    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUser, Authentication authentication) {
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody @Valid UpdateUserDTO updateUser,
+                                                    Authentication authentication) {
+
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         User user = userService.updateUser(updateUser, authentication);
         if (user != null) {
             return ResponseEntity.ok(UserMapper.mapFromUserEntityToUpdateUserDTO(user));
@@ -127,25 +102,18 @@ public class UserController {
     }
 
     @Operation(
-            tags = "Пользователи",
-            summary = "Обновление аватара авторизованного пользователя",
+            summary = "Обновление аватара авторизованного пользователя", tags = "Пользователи",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Картинка загружена",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Пользователь не авторизован (unauthorized)",
-                            content = @Content()
-                    )
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content()),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
             }
     )
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image,
                                                 Authentication authentication) throws IOException {
+
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         userService.updateUserImage(image, authentication);
         return ResponseEntity.ok().build();
     }

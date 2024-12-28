@@ -13,4 +13,4 @@ CREATE TABLE IF NOT EXISTS comments(
 
     FOREIGN KEY (author_id) REFERENCES users(id),
     FOREIGN KEY (ad_id) REFERENCES ads(id)
-)
+);

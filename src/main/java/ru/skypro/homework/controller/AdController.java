@@ -33,80 +33,58 @@ public class AdController {
     private final LoggingMethod loggingMethod;
 
     @Operation(
-            tags = "Объявления",
-            summary = "Получение всех объявлений",
+            summary = "Получение всех объявлений", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AdsDTO.class)
-                            )
-                    )
+                                    schema = @Schema(implementation = AdsDTO.class)))
             }
     )
     @GetMapping
     public ResponseEntity<AdsDTO> getAllAds() {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         return ResponseEntity.ok(adService.getAllAds());
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Добавление объявления",
+            summary = "Добавление объявления", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Created",
+                    @ApiResponse(responseCode = "201", description = "Created",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AdDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = AdDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content())
             }
     )
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<AdDTO> createAd(@RequestPart(value = "properties", required = false)
-                                          CreateOrUpdateAdDTO properties,
-                                          @RequestPart("image") MultipartFile image,
-                                          Authentication authentication) throws IOException {
+    public ResponseEntity<AdDTO> addAd(@RequestPart(value = "properties", required = false)
+                                       CreateOrUpdateAdDTO properties,
+                                       @RequestPart("image") MultipartFile image,
+                                       Authentication authentication) throws IOException {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
-        return ResponseEntity.ok(adService.createAd(properties, image, authentication));
+        log.info("Полученные данные properties: {}", properties);
+        log.info("Полученный файл image: {}", image.getOriginalFilename());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(adService.createAd(properties, image, authentication));
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Получить информацию об объявлении",
+            summary = "Получить информацию об объявлении", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "No content",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content()
-                    )
+                    @ApiResponse(responseCode = "204", description = "No content", content = @Content()),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDTO> getAdById(@PathVariable("id") Integer id) {
+    public ResponseEntity<ExtendedAdDTO> getAds(@PathVariable("id") Integer id) {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         ExtendedAdDTO ad = adService.getAdById(id);
 
         if (ad != null) {
@@ -117,76 +95,44 @@ public class AdController {
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Удаление объявления",
+            summary = "Удаление объявления", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "No Content",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Forbidden",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content()
-                    )
+                    @ApiResponse(responseCode = "204", description = "No Content", content = @Content()),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @DeleteMapping("/{id}")
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<Void> deleteAdById(@PathVariable("id") Integer id) throws IOException {
+    public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id) throws IOException {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         return (adService.deleteAdById(id))
                 ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Обновление информации об объявлении",
+            summary = "Обновление информации об объявлении", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AdDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Forbidden",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = AdDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @PatchMapping("/{id}")
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<AdDTO> updateAdById(@PathVariable("id") Integer id,
-                                              @RequestBody CreateOrUpdateAdDTO dto) {
+    public ResponseEntity<AdDTO> updateAds(@PathVariable("id") Integer id,
+                                           @RequestBody CreateOrUpdateAdDTO dto) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
+
         AdDTO ad = adService.updateAdById(id, dto);
 
         if (ad != null) {
@@ -198,30 +144,20 @@ public class AdController {
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Получение объявлений авторизованного пользователя",
+            summary = "Получение объявлений авторизованного пользователя", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AdsDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = AdsDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content())
             }
     )
     @GetMapping("/me")
-    public ResponseEntity<AdsDTO> getCurrentUserAds(Authentication authentication) {
+    public ResponseEntity<AdsDTO> getAdsMe(Authentication authentication) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
 
-        //если пользователь авторизовался
         if (authentication.getName() != null) {
             String username = authentication.getName();
             return ResponseEntity.ok(adService.getCurrentUserAds(username));
@@ -231,42 +167,26 @@ public class AdController {
     }
 
     @Operation(
-            tags = "Объявления",
-            summary = "Обновление картинки объявления",
+            summary = "Обновление картинки объявления", tags = "Объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
+                    @ApiResponse(responseCode = "200", description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
-                                    schema = @Schema(implementation = String[].class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "403",
-                            description = "Forbidden",
-                            content = @Content()
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content()
-                    )
+                                    schema = @Schema(implementation = String[].class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content()),
+                    @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content()),
+                    @ApiResponse(responseCode = "404", description = "Not found", content = @Content())
             }
     )
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #id)")
-    public ResponseEntity<Void> updateImageOnAdById(@PathVariable("id") Integer id,
-                                                    @RequestPart MultipartFile image,
-                                                    Authentication authentication) throws IOException {
+    public ResponseEntity<Void> updateImage(@PathVariable("id") Integer id,
+                                            @RequestPart MultipartFile image,
+                                            Authentication authentication) throws IOException {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
         log.info("adId = {}", id);
+
         adService.updateImageOnAdById(id, image);
         return ResponseEntity.ok().build();
     }
