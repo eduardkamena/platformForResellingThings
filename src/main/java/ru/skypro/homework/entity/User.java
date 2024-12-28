@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
@@ -14,16 +15,15 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "users")
-public class User extends ModelImage{
+public class User{
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
 //    @SequenceGenerator(name = "user_id_seq", sequenceName = "USER_ID_SEQ", allocationSize = 1)
-    private int id;
+    private Integer id;
 
     @Column(name = "username")
     private String username;
@@ -44,9 +44,10 @@ public class User extends ModelImage{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-    @JoinColumn(name = "image")
+    @JoinColumn(name = "image_id")
+    //@Value("${path.to.user.images}")
     private Image image;
 
     @OneToMany(mappedBy = "author")
@@ -54,7 +55,5 @@ public class User extends ModelImage{
 
     @OneToMany(mappedBy = "author")
     private Collection<Comment> comments;
-
-    //private String filePath; //путь на ПК
 
 }

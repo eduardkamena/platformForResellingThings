@@ -15,11 +15,9 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "pk")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_id_seq")
-//    @SequenceGenerator(name = "comment_id_seq", sequenceName = "COMMENT_ID_SEQ", allocationSize = 1)
-    private int id;
+    private int pk;
 
     @Column(name = "text")
     private String text;

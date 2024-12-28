@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
@@ -61,10 +62,10 @@ public class CommentController {
                                                          Authentication authentication) {
 
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
-        if (authentication.getName() != null) {
-            return ResponseEntity.ok(commentService.getCommentsByAdId(id));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        try {
+            return ResponseEntity.ok(commentService.getComments(id, authentication));
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -93,12 +94,18 @@ public class CommentController {
             }
     )
     @PostMapping(value = "/{id}/comments")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CommentDTO> addComment(@PathVariable("id") Integer id,
-                                                            @RequestBody CreateOrUpdateCommentDTO newComment,
+                                                            @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDto,
                                                             Authentication authentication) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
-        return ResponseEntity.ok(commentService.createCommentToAdById(id, newComment, authentication.getName()));
+        try {
+            commentService.addComment(id, createOrUpdateCommentDto, authentication);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(commentService.addComment(id, createOrUpdateCommentDto, authentication));
     }
 
     @Operation(
@@ -128,24 +135,18 @@ public class CommentController {
             }
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #adId)")
-    public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
+    @PreAuthorize("hasAuthority('ADMIN') or @commentServiceImpl.getComment(#commentId).user.email == authentication.principal.username")
+    public ResponseEntity<?> deleteComment(@PathVariable("adId") Integer adId,
                                                     @PathVariable("commentId") Integer commentId,
                                                     Authentication authentication) {
 
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
-        if (authentication.getName() != null) {
-            String result = commentService.deleteCommentFromAd(commentId, authentication.getName());
-            if (result.equals("forbidden")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            } else if (result.equals("not found")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            } else {
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        try {
+            commentService.deleteComment(adId, commentId, authentication);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Operation(
@@ -178,23 +179,22 @@ public class CommentController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize(value = "hasRole('ADMIN') or @adService.isAuthorsAd(authentication.getName(), #adId)")
+    @PreAuthorize("hasAuthority('ADMIN') or @commentServiceImpl.getComment(#commentId).user.email == authentication.principal.username")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable("adId") Integer adId,
                                                     @PathVariable("commentId") Integer commentId,
-                                                    @RequestBody CreateOrUpdateCommentDTO newComment,
+                                                    @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDto,
                                                     Authentication authentication) {
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
         log.info("adId: {}", adId);
         log.info("commentId: {}", commentId);
 
-        var userRole = authentication.getAuthorities();
-        log.info("роль пользователя - {}", userRole);
-        log.info("isAuthorAd({})", adService.isAuthorsAd(authentication.getName(), adId));
-        if (authentication.getName() != null) {
-            CommentDTO comment = commentService.updateComment(commentId, newComment, authentication.getName());
-            return ResponseEntity.ok(comment);
+        try {
+            commentService.updateComment(adId, commentId, createOrUpdateCommentDto, authentication);
+        } catch (NotFoundException e) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.ok(commentService.updateComment(adId, commentId, createOrUpdateCommentDto, authentication));
     }
 
 }

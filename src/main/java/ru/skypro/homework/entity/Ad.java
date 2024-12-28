@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,16 +14,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(of = "pk")
 @Table(name = "ads")
-public class Ad extends ModelImage {
+public class Ad {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "pk")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ads_id_seq")
-//    @SequenceGenerator(name = "ads_id_seq", sequenceName = "ADS_ID_SEQ", allocationSize = 1)
-    private int id;
+    private Integer pk;
 
     @Column(name = "title")
     private String title;
@@ -39,12 +38,11 @@ public class Ad extends ModelImage {
 
     @OneToOne
     @JoinColumn(name = "image_id")
+    @Value("${path.to.ad.photo}")
     private Image image;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL,
-            orphanRemoval = true, fetch = FetchType.LAZY)
+            orphanRemoval = true, fetch = FetchType.EAGER)
     private Collection<Comment> comments;
-
-    //private String filePath; //путь на ПК
 
 }

@@ -16,8 +16,6 @@ public class Image {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_id_seq")
-//    @SequenceGenerator(name = "image_id_seq", sequenceName = "IMAGE_ID_SEQ", allocationSize = 1)
     private int id;
 
     @Column(name = "file_path")
@@ -30,6 +28,7 @@ public class Image {
     private String mediaType;
 
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "byte_data")
     private byte[] data;
 

@@ -16,6 +16,7 @@ import ru.skypro.homework.dto.user.NewPasswordDTO;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.exception.PasswordIsNotCorrectException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.service.LoggingMethod;
 import ru.skypro.homework.service.UserService;
@@ -59,11 +60,15 @@ public class UserController {
                     )
             }
     )
-    @PostMapping("/set_password") // http://localhost:8080/users/set_password
-    public ResponseEntity<Void> setPassword(@RequestBody NewPasswordDTO newPass, Authentication authentication) {
-        log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
-        userService.setPassword(newPass, authentication);
-        return ResponseEntity.ok().build();
+    @PostMapping("/set_password")
+    public ResponseEntity<NewPasswordDTO> setPassword(@Valid @RequestBody NewPasswordDTO newPass, Authentication authentication) {
+        try {
+            userService.updatePassword(newPass, authentication.getName());
+        } catch (PasswordIsNotCorrectException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(newPass);
+        }
+
+        return ResponseEntity.ok(newPass);
     }
 
     @Operation(
@@ -85,15 +90,10 @@ public class UserController {
                     )
             }
     )
-    @GetMapping("/me") // http://localhost:8080/users/me
+    @GetMapping("/me")
     public ResponseEntity<UserDTO> getUser(Authentication authentication) {
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
-        User user = userService.getUser(authentication.getName());
-        if (user != null) {
-            return ResponseEntity.ok(UserMapper.mapFromUserEntityToUserDTO(user));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.ok(userService.getUser(authentication.getName()));
     }
 
     @Operation(
@@ -115,15 +115,10 @@ public class UserController {
                     )
             }
     )
-    @PatchMapping("/me") // http://localhost:8080/users/me
-    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUser, Authentication authentication) {
+    @PatchMapping("/me")
+    public ResponseEntity<UpdateUserDTO> updateUser(@Valid @RequestBody UpdateUserDTO updateUser, Authentication authentication) {
         log.info("Запущен метод контроллера: {}", loggingMethod.getMethodName());
-        User user = userService.updateUser(updateUser, authentication);
-        if (user != null) {
-            return ResponseEntity.ok(UserMapper.mapFromUserEntityToUpdateUserDTO(user));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.ok(userService.updateUser(authentication.getName(), updateUser));
     }
 
     @Operation(
@@ -146,21 +141,19 @@ public class UserController {
     public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image,
                                                 Authentication authentication) throws IOException {
         log.info("За запущен метод контроллера: {}", loggingMethod.getMethodName());
-        userService.updateUserImage(image, authentication);
-        return ResponseEntity.ok().build();
+        userService.updateUserImage(authentication.getName(), image);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping(value = "{username}/image", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getUserImage(@PathVariable String username) throws IOException{
+        try {
+            byte[] imageBytes = userService.getImage(username);
+            return ResponseEntity.ok(imageBytes);
+        } catch (IOException e) {
+            log.error("Error retrieving user image for username: {}", username, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
-    // закомментировал методы требующие проверки
-
-//    @GetMapping(path = "/me")
-//    public UserDTO getCurrentUserInfo(Authentication authentication) {
-//        return userService.findUserByUsername(authentication.getName());
-//    }
-//
-//    @PostMapping(path = "/set_password")
-//    public void setPassword(@RequestBody @Valid NewPasswordDTO newPasswordDTO,
-//                                         Authentication authentication) {
-//        userService.changePassword(newPasswordDTO, authentication.getName());
-//    }
 }

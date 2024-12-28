@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Integer> {
 
-    @Override
-    Optional<Image> findById(Integer id);
+    Image findByFilePath(String path);
 
 }

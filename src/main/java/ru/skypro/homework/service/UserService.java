@@ -1,11 +1,15 @@
 package ru.skypro.homework.service;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.user.NewPasswordDTO;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.exception.PasswordIsNotCorrectException;
+import ru.skypro.homework.exception.UserAlreadyRegisteredException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -13,40 +17,60 @@ import java.util.Optional;
 public interface UserService {
 
     /**
-     * Метод обновляет пароль для авторизованного пользователя.
-     * @param newPass        новый пароль
-     * @param authentication
+     * Обновляет пароль пользователя.
+     *
+     *       @param dto             Объект, содержащий новый пароль и текущий пароль.
+     *       @param username       Имя пользователя.
+     *       @throws PasswordIsNotCorrectException Если текущий пароль неверен.
+     *       @throws UsernameNotFoundException    Если пользователь с данным именем не найден.
      */
-    void setPassword(NewPasswordDTO newPass, Authentication authentication);
+    void updatePassword(NewPasswordDTO dto, String username);
 
     /**
-     * Метод возвращает информацию об авторизованном пользователе.
-     * @param username
-     * @return объект {@link User}, содержащий информацию о пользователе.
+     *  Возвращает изображение пользователя по его имени.
+     *
+     *       @param username Имя пользователя.
+     *       @return Массив байтов, представляющий изображение.
+     *       @throws UsernameNotFoundException Если пользователь с данным именем не найден.
      */
-    User getUser(String username);
+    byte[] getImage(String username) throws IOException;
 
     /**
-     * Метод обновляет информацию об авторизованном пользователе.
-     * @param updateUser объект содержащий поля с именем, фамилией и номером телефона.
-     * @param authentication
-     * @return объект {@link User}
+     * Возвращает информацию о текущем пользователе.
+     *
+     *       @param username Имя пользователя.
+     *       @return Объект UserDto, содержащий информацию о пользователе.
+     *       @throws UsernameNotFoundException Если пользователь с данным именем не найден.
      */
-    User updateUser(UpdateUserDTO updateUser, Authentication authentication);
+    UserDTO getUser(String username);
 
     /**
-     * Метод обновляет аватар авторизованного пользователя.
-     * @param image
-     * @return true или false
-     * @throws IOException
+     * Обновляет информацию о текущем пользователе.
+     *
+     *       @param username Имя пользователя.
+     *       @param dto      Объект UpdateUserDto, содержащий обновленные данные.
+     *       @return Объект UpdateUserDto, содержащий обновленные данные.
+     *       @throws UsernameNotFoundException Если пользователь с данным именем не найден.
      */
-    void updateUserImage(MultipartFile image, Authentication authentication) throws IOException;
+    UpdateUserDTO updateUser(String username, UpdateUserDTO dto);
 
+    /**
+     * Обновляет изображение текущего пользователя.
+     *
+     *       @param username Имя пользователя.
+     *       @param file     Файл изображения.
+     *       @throws IOException             Если произошла ошибка при чтении файла или записи изображения.
+     *       @throws UsernameNotFoundException Если пользователь с данным именем не найден.
+     */
+    void updateUserImage(String username, MultipartFile file) throws IOException;
 
-    // Нужно пересмотреть (рефактор/соединить/удалить)
-    UserDTO findUserByUsername(String username);
-
-    // Нужно пересмотреть (рефактор/соединить/удалить)
-    void changePassword(NewPasswordDTO newPasswordDTO, String username);
+    /**
+     *  Регистрирует нового пользователя.
+     *
+     *       @param dto Данные для регистрации пользователя.
+     *       @return Зарегистрированный пользователь.
+     *       @throws UserAlreadyRegisteredException Если пользователь с таким email уже существует.
+     */
+    User registerUser(Register dto);
 
 }

@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS users(
     last_name VARCHAR(16) NOT NULL,
     phone VARCHAR(18) UNIQUE NOT NULL,
     role VARCHAR(32) NOT NULL,
-    image INT,
+    image_id INT,
 
     PRIMARY KEY (id),
 
-    FOREIGN KEY (image) REFERENCES images(id)
+    FOREIGN KEY (image_id) REFERENCES images(id)
 );

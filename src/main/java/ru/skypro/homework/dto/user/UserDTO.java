@@ -23,12 +23,6 @@ public class UserDTO {
     @Email(message = "Email адрес должен быть в формате user@example.com")
     private String email;
 
-    @Schema (description = "пароль пользователя")
-    @NotBlank(message = "Пароль не может быть пустым")
-    @Size(min = 8, max = 16,
-            message = "Длина пароля должна быть от 8 до 16 символов")
-    private String password;
-
     @Schema (description = "имя пользователя")
     @NotBlank(message = "Имя должно быть указано")
     @Size(min = 2, max = 16,

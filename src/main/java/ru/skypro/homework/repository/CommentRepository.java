@@ -11,9 +11,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    @Query(value = "SELECT * FROM comments WHERE adId = :adId", nativeQuery = true)
-    List<Comment> findByAdId(@Param("adId") Integer adId);
-
-    Comment findFirstByText(String text);
+    List<Comment> findByAdPk(Integer adPk);
 
 }

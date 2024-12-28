@@ -1,47 +1,34 @@
 package ru.skypro.homework.config;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private int id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private Role role;
+    private final User user;
 
-    public CustomUserDetails(User user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.phone = user.getPhone();
-        this.role = user.getRole();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Optional.ofNullable(role)
-                .map(role -> "ROLE_" + role)
-                .map(SimpleGrantedAuthority::new)
-                .map(List::of)
-                .orElse(Collections.emptyList());
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     @Override
@@ -63,4 +50,5 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
