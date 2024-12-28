@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+repos-services-controllers
                 .httpBasic(withDefaults());
         return http.build();
     }
