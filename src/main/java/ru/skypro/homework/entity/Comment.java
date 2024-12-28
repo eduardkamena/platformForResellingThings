@@ -1,31 +1,38 @@
 package ru.skypro.homework.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "t_comment")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "comments")
 public class Comment {
+
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_comment_id_seq")
-    @SequenceGenerator(name = "t_comment_id_seq", sequenceName = "t_comment_id_seq", allocationSize = 1)
-    private int pk;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_id_seq")
+//    @SequenceGenerator(name = "comment_id_seq", sequenceName = "COMMENT_ID_SEQ", allocationSize = 1)
+    private int id;
 
-    @Column(name = "c_text")
+    @Column(name = "text")
     private String text;
 
-    @Column(name = "c_date")
-    private LocalDateTime createdAt;
+    @Column(name = "date_time")
+    private Long createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "c_author_id")
+    @JoinColumn(name = "author_id")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "c_announce_id")
-    private Ad announce;
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
+
 }
