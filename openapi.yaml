@@ -28,7 +28,7 @@ paths:
       tags:
         - Пользователи
       summary: 'Получение информации об авторизованном пользователе'
-      operationId: getUser
+      operationId: getUserEntity
       responses:
         '200':
           content:
@@ -212,7 +212,7 @@ paths:
       tags:
         - Объявления
       summary: 'Получение информации об объявлении'
-      operationId: getAds
+      operationId: getAdEntity
       parameters:
         - name: id
           in: path

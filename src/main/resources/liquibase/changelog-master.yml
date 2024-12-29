@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/migration/users-table.sql
+  - include:
+      file: liquibase/migration/ads-table.sql
+  - include:
+      file: liquibase/migration/comments-table.sql
