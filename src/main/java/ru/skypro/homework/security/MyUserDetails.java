@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
-import ru.skypro.homework.dto.MyUserDetailsDto;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,16 +15,16 @@ import java.util.Optional;
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MyUserDetails implements UserDetails {
 
-    private MyUserDetailsDto myUserDetailsDto;
+    private MyUserDetailsDTO myUserDetailsDto;
 
-    public void setMyUserDetailsDto(MyUserDetailsDto myUserDetailsDto) {
+    public void setMyUserDetailsDto(MyUserDetailsDTO myUserDetailsDto) {
         this.myUserDetailsDto = myUserDetailsDto;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Optional.ofNullable(myUserDetailsDto)
-                .map(MyUserDetailsDto::getRole)
+                .map(MyUserDetailsDTO::getRole)
                 .map(role -> "ROLE_" + role)
                 .map(SimpleGrantedAuthority::new)
                 .map(Collections::singleton)
@@ -35,14 +34,14 @@ public class MyUserDetails implements UserDetails {
     @Override
     public String getPassword() {
         return Optional.ofNullable(myUserDetailsDto)
-                .map(MyUserDetailsDto::getPassword)
+                .map(MyUserDetailsDTO::getPassword)
                 .orElse(null);
     }
 
     @Override
     public String getUsername() {
         return Optional.ofNullable(myUserDetailsDto)
-                .map(MyUserDetailsDto::getEmail)
+                .map(MyUserDetailsDTO::getEmail)
                 .orElse(null);
     }
 

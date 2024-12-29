@@ -3,28 +3,27 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
-import ru.skypro.homework.dto.CommentDto;
-import ru.skypro.homework.dto.CreateComment;
-import ru.skypro.homework.entity.Comment;
+import ru.skypro.homework.dto.Comment;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
+import ru.skypro.homework.entity.CommentEntity;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    List<CommentDto> toListDto(List<Comment> commentList);
+    List<Comment> toListDto(List<CommentEntity> commentEntityList);
 
-    Comment toCommentFromCreateComment(CreateComment createComment);
+    CommentEntity toCommentFromCreateComment(CreateOrUpdateComment createOrUpdateComment);
 
-    @Mapping(target = "author", source = "user.id")
-    @Mapping(target = "authorImage", source = "user.image")
-    @Mapping(target = "authorFirstName", source = "user.firstName")
+    @Mapping(target = "author", source = "author.id")
+    @Mapping(target = "authorImage", source = "author.image")
+    @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "pk", source = "id")
-    CommentDto toCommentDtoFromComment(Comment comment);
+    Comment toCommentDtoFromComment(CommentEntity commentEntity);
 
-    @Mapping(target = "user.id", ignore = true)
-    @Mapping(target = "user.image",ignore = true)
-    @Mapping(target = "user.firstName",ignore = true)
-    void updateCommentFromCommentDto(CommentDto commentDto,@MappingTarget Comment comment);
+//    @Mapping(target = "author.id", ignore = true)
+//    @Mapping(target = "author.image",ignore = true)
+//    @Mapping(target = "author.firstName",ignore = true)
+//    void updateCommentFromCommentDto(Comment comment, @MappingTarget CommentEntity commentEntity);
 }

@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.MyUserDetailsDto;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
@@ -20,7 +19,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        MyUserDetailsDto myUserDetailsDto = userRepository.findByEmail(email)
+        MyUserDetailsDTO myUserDetailsDto = userRepository.findByEmail(email)
                 .map(u -> userMapper.toMyUserDetailsDto(u))
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
         myUserDetails.setMyUserDetailsDto(myUserDetailsDto);

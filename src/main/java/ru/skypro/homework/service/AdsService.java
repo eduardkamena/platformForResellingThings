@@ -7,29 +7,29 @@ import java.io.IOException;
 
 public interface AdsService {
 
-    ResponseWrapperAds getAllAds();
+    Ads getAllAds();
 
-    ResponseWrapperAds getAdsMe(String email);
+    Ads getAdsMe(String email);
 
-    AdsDto addAd(CreateAds createAds, String email, MultipartFile image);
+    Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image);
 
-    ResponseWrapperComment getComments(Integer id);
+    Comments getComments(int id);
 
-    CommentDto addComment(Integer id, CreateComment createComment, String email);
+    Comment addComment(int id, CreateOrUpdateComment createOrUpdateComment, String email);
 
-    FullAds getAds(Integer id);
+    ExtendedAd getAds(int id);
 
-    void removeAd(Integer id);
+    void removeAd(int id);
 
-    AdsDto updateAds(CreateAds createAds, Integer id);
+    Ad updateAds(CreateOrUpdateAd createOrUpdateAd, int id);
 
-    void deleteComment(Integer adId, Integer id);
+    void deleteComment(int adId, int id);
 
-    CommentDto updateComment(Integer adId, Integer id, CreateComment createComment);
+    Comment updateComment(int adId, int id, CreateOrUpdateComment createOrUpdateComment);
 
-    void updateAdsImage(Integer id, MultipartFile image);
+    void updateAdsImage(int id, MultipartFile image);
 
     byte[] getImage(String name) throws IOException;
 
-    CommentDto getCommentDto(Integer adId,Integer id);
+    Comment getCommentDto(int adId, int id);
 }

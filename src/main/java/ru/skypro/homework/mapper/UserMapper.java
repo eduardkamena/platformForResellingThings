@@ -3,23 +3,22 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
-import ru.skypro.homework.dto.MyUserDetailsDto;
+import ru.skypro.homework.security.MyUserDetailsDTO;
 import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.UserDto;
-import ru.skypro.homework.entity.User;
+import ru.skypro.homework.dto.User;
+import ru.skypro.homework.entity.UserEntity;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
     @Mapping(source = "username", target = "email")
-    User toUser(Register register);
+    UserEntity toUser(Register register);
 
-    MyUserDetailsDto toMyUserDetailsDto(User user);
+    MyUserDetailsDTO toMyUserDetailsDto(UserEntity userEntity);
 
-    UserDto toUserDto(User user);
+    User toUserDto(UserEntity userEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "image", ignore = true)
-    void updateUserFromUserDto(UserDto userDto, @MappingTarget User user);
+    void updateUserFromUserDto(User user, @MappingTarget UserEntity userEntity);
 }

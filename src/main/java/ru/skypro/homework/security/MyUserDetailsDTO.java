@@ -1,9 +1,10 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.security;
 
 import lombok.Data;
+import ru.skypro.homework.dto.Role;
 
 @Data
-public class MyUserDetailsDto {
+public class MyUserDetailsDTO {
 
     private Integer id;
     private String email;

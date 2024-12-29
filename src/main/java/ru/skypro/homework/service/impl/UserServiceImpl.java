@@ -6,8 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.UserDto;
-import ru.skypro.homework.entity.User;
+import ru.skypro.homework.dto.User;
+import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
@@ -31,50 +31,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean setPassword(NewPassword newPassword, String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (encoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
-                user.setPassword(encoder.encode(newPassword.getNewPassword()));
-                userRepository.save(user);
-                log.trace("Updated password");
+            UserEntity userEntity = optionalUser.get();
+            if (encoder.matches(newPassword.getCurrentPassword(), userEntity.getPassword())) {
+                userEntity.setPassword(encoder.encode(newPassword.getNewPassword()));
+                userRepository.save(userEntity);
+                log.info("Updated password");
                 return true;
             }
         }
-        log.trace("Password not update");
+        log.info("Password not update");
         return false;
     }
 
 
     @Override
-    public UserDto getUser(String email) {
-        User user = userRepository.findByEmail(email)
+    public User getUser(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
-        return userMapper.toUserDto(user);
+        return userMapper.toUserDto(userEntity);
     }
 
 
     @Override
-    public UserDto updateUser(UserDto userDto, String email) {
-        User user = userRepository.findByEmail(email)
+    public User updateUser(User user, String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPhone(userDto.getPhone());
-        userRepository.save(user);
-        log.trace("User updated");
-        return userMapper.toUserDto(user);
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+        userEntity.setPhone(user.getPhone());
+        userRepository.save(userEntity);
+        log.info("UserEntity updated");
+        return userMapper.toUserDto(userEntity);
     }
 
 
     @Override
     public void updateAvatar(MultipartFile image, String email) {
-        User user = userRepository.findByEmail(email)
+        UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
-        imageService.deleteFileIfNotNull(user.getImage());
-        user.setImage(imageService.saveImage(image, "/users"));
-        userRepository.save(user);
-        log.trace("Avatar updated");
+        imageService.deleteFileIfNotNull(userEntity.getImage());
+        userEntity.setImage(imageService.saveImage(image, "/users"));
+        userRepository.save(userEntity);
+        log.info("Avatar updated");
     }
 
 

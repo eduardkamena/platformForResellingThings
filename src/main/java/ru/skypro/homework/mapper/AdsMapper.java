@@ -3,30 +3,30 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import ru.skypro.homework.dto.AdsDto;
-import ru.skypro.homework.dto.CreateAds;
-import ru.skypro.homework.dto.FullAds;
-import ru.skypro.homework.entity.Ads;
+import ru.skypro.homework.dto.Ad;
+import ru.skypro.homework.dto.CreateOrUpdateAd;
+import ru.skypro.homework.dto.ExtendedAd;
+import ru.skypro.homework.entity.AdEntity;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AdsMapper {
 
-    Ads toAdsFromCreateAds(CreateAds createAds);
+    AdEntity toAdsFromCreateAds(CreateOrUpdateAd createOrUpdateAd);
 
-    @Mapping(target = "author", source = "user.id")
+    @Mapping(target = "author", source = "author.id")
     @Mapping(target = "pk", source = "id")
-    AdsDto toAdsDto(Ads ads);
+    Ad toAdsDto(AdEntity adEntity);
 
-    List<AdsDto> toDtos(List<Ads> adsList);
+    List<Ad> toDtos(List<AdEntity> adEntityList);
 
     @Mapping(target = "pk", source = "id")
-    @Mapping(target = "authorFirstName",source = "user.firstName")
-    @Mapping(target = "authorLastName",source = "user.lastName")
-    @Mapping(target = "email",source = "user.email")
-    @Mapping(target = "phone",source = "user.phone")
-    FullAds toFullAds(Ads ads);
+    @Mapping(target = "authorFirstName",source = "author.firstName")
+    @Mapping(target = "authorLastName",source = "author.lastName")
+    @Mapping(target = "email",source = "author.email")
+    @Mapping(target = "phone",source = "author.phone")
+    ExtendedAd toFullAds(AdEntity adEntity);
 
-    void updateAds(CreateAds createAds, @MappingTarget Ads ads);
+    void updateAds(CreateOrUpdateAd createOrUpdateAd, @MappingTarget AdEntity adEntity);
 }

@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.Role;
-import ru.skypro.homework.entity.User;
+import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
@@ -25,9 +25,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean login(String userName, String password) {
-        Optional<User> optionalUser = userRepository.findByEmail(userName);
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(userName);
         if (optionalUser.isEmpty()) {
-            log.debug("User not found");
+            log.info("UserEntity not found");
             return false;
         }
         return encoder.matches(password, optionalUser.get().getPassword());
@@ -39,12 +39,12 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.findByEmail(register.getUsername()).isPresent()) {
             return false;
         }
-        User user = userMapper.toUser(register);
-        user.setEmail(user.getEmail().toLowerCase());
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setRole(role);
-        userRepository.save(user);
-        log.debug("Registered a new user");
+        UserEntity userEntity = userMapper.toUser(register);
+        userEntity.setEmail(userEntity.getEmail().toLowerCase());
+        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
+        userEntity.setRole(role);
+        userRepository.save(userEntity);
+        log.info("Registered a new userEntity");
         return true;
     }
 }
