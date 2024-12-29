@@ -13,21 +13,13 @@ public interface AdsService {
 
     Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image);
 
-    Comments getComments(int id);
-
-    Comment addComment(int id, CreateOrUpdateComment createOrUpdateComment, String email);
-
     ExtendedAd getAds(int id);
 
     void removeAd(int id);
 
     Ad updateAds(CreateOrUpdateAd createOrUpdateAd, int id);
 
-    void deleteComment(int adId, int id);
-
-    Comment updateComment(int adId, int id, CreateOrUpdateComment createOrUpdateComment);
-
-    void updateAdsImage(int id, MultipartFile image);
+    void updateImage(int id, MultipartFile image);
 
     byte[] getImage(String name) throws IOException;
 

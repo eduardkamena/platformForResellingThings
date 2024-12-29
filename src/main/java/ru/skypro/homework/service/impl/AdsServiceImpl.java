@@ -44,7 +44,6 @@ public class AdsServiceImpl implements AdsService {
         return ads;
     }
 
-
     @Override
     public Ads getAdsMe(String email) {
         List<AdEntity> adEntityList = adsRepository.findByAuthor(userRepository.findByEmail(email)
@@ -56,7 +55,6 @@ public class AdsServiceImpl implements AdsService {
         return ads;
     }
 
-
     @Override
     public Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image) {
         AdEntity adEntity = adsMapper.toAdsFromCreateAds(createOrUpdateAd);
@@ -67,14 +65,12 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toAdsDto(adEntity);
     }
 
-
     @Override
     public ExtendedAd getAds(int id) {
         AdEntity adEntity = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("AdEntity not found by id: " + id));
         return adsMapper.toFullAds(adEntity);
     }
-
 
     @Transactional
     @Override
@@ -87,8 +83,6 @@ public class AdsServiceImpl implements AdsService {
         adsRepository.delete(adEntity);
     }
 
-
-
     @Override
     public Ad updateAds(CreateOrUpdateAd createOrUpdateAd, int id) {
         AdEntity adEntity = adsRepository.findById(id)
@@ -99,54 +93,8 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toAdsDto(adEntity);
     }
 
-
     @Override
-    public Comments getComments(int id) {
-        List<CommentEntity> commentEntityList = commentRepository.findAllByAdId(id);
-        List<Comment> comments = commentMapper.toListDto(commentEntityList);
-        Comments responseWrapperComment = new Comments();
-        responseWrapperComment.setResults(comments);
-        responseWrapperComment.setCount(comments.size());
-        return responseWrapperComment;
-    }
-
-
-    @Override
-    public Comment addComment(int id, CreateOrUpdateComment createOrUpdateComment, String email) {
-        AdEntity adEntity = adsRepository.findById(id)
-                .orElseThrow(() -> new AdsNotFoundException("AdEntity not found"));
-        CommentEntity commentEntity = commentMapper.toCommentFromCreateComment(createOrUpdateComment);
-        commentEntity.setAd(adEntity);
-        commentEntity.setCreatedAt(System.currentTimeMillis());
-        commentEntity.setAuthor(userRepository.findByEmail(email).get());
-        commentRepository.save(commentEntity);
-        log.info("Added commentEntity with id: ", commentEntity.getId());
-        return commentMapper.toCommentDtoFromComment(commentEntity);
-    }
-
-
-
-    @Override
-    @Transactional
-    public void deleteComment(int adId, int id) {
-        commentRepository.deleteByAdIdAndId(adId, id);
-        log.info("Deleted comment with id: ", id);
-    }
-
-
-    @Override
-    public Comment updateComment(int adId, int id, CreateOrUpdateComment createOrUpdateComment) {
-        CommentEntity commentEntity = commentRepository.findCommentByIdAndAd_Id(id, adId)
-                .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"));
-        commentEntity.setText(createOrUpdateComment.getText());
-        commentRepository.save(commentEntity);
-        log.info("Updated commentEntity with id: ", id);
-        return commentMapper.toCommentDtoFromComment(commentEntity);
-    }
-
-
-    @Override
-    public void updateAdsImage(int id, MultipartFile image) {
+    public void updateImage(int id, MultipartFile image) {
         AdEntity adEntity = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("AdEntity not found"));
         imageService.deleteFileIfNotNull(adEntity.getImage());
@@ -154,12 +102,10 @@ public class AdsServiceImpl implements AdsService {
         adsRepository.save(adEntity);
     }
 
-
     @Override
     public byte[] getImage(String name) throws IOException {
         return imageService.getImage(name);
     }
-
 
     @Override
     public Comment getCommentDto(int adId, int id) {
@@ -173,4 +119,5 @@ public class AdsServiceImpl implements AdsService {
                 .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"))
                 .getAuthor().getEmail();
     }
+
 }

@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
     private final UserMapper userMapper;
 
-
     @Override
     public boolean setPassword(NewPassword newPassword, String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
@@ -45,14 +44,12 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
     @Override
     public User getUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
         return userMapper.toUserDto(userEntity);
     }
-
 
     @Override
     public User updateUser(User user, String email) {
@@ -66,7 +63,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDto(userEntity);
     }
 
-
     @Override
     public void updateAvatar(MultipartFile image, String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
@@ -77,9 +73,9 @@ public class UserServiceImpl implements UserService {
         log.info("Avatar updated");
     }
 
-
     @Override
     public byte[] getImage(String name) throws IOException {
         return imageService.getImage(name);
     }
+
 }

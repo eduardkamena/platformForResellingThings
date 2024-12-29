@@ -4,24 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.service.LoginService;
 
 import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-    private final UserMapper userMapper;
-
 
     @Override
     public boolean login(String userName, String password) {
@@ -33,18 +28,4 @@ public class AuthServiceImpl implements AuthService {
         return encoder.matches(password, optionalUser.get().getPassword());
     }
 
-
-    @Override
-    public boolean register(Register register, Role role) {
-        if (userRepository.findByEmail(register.getUsername()).isPresent()) {
-            return false;
-        }
-        UserEntity userEntity = userMapper.toUser(register);
-        userEntity.setEmail(userEntity.getEmail().toLowerCase());
-        userEntity.setPassword(encoder.encode(userEntity.getPassword()));
-        userEntity.setRole(role);
-        userRepository.save(userEntity);
-        log.info("Registered a new userEntity");
-        return true;
-    }
 }

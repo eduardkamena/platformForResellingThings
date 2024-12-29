@@ -64,7 +64,7 @@ public class AdsController {
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable int id, @RequestParam MultipartFile image) {
-        adsService.updateAdsImage(id, image);
+        adsService.updateImage(id, image);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
