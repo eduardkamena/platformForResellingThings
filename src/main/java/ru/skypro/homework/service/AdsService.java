@@ -23,5 +23,4 @@ public interface AdsService {
 
     byte[] getImage(String name) throws IOException;
 
-    Comment getCommentDto(int adId, int id);
 }

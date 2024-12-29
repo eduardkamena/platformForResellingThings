@@ -22,11 +22,12 @@ public interface AdsMapper {
     List<Ad> toDtos(List<AdEntity> adEntityList);
 
     @Mapping(target = "pk", source = "id")
-    @Mapping(target = "authorFirstName",source = "author.firstName")
-    @Mapping(target = "authorLastName",source = "author.lastName")
-    @Mapping(target = "email",source = "author.email")
-    @Mapping(target = "phone",source = "author.phone")
+    @Mapping(target = "authorFirstName", source = "author.firstName")
+    @Mapping(target = "authorLastName", source = "author.lastName")
+    @Mapping(target = "email", source = "author.email")
+    @Mapping(target = "phone", source = "author.phone")
     ExtendedAd toFullAds(AdEntity adEntity);
 
     void updateAds(CreateOrUpdateAd createOrUpdateAd, @MappingTarget AdEntity adEntity);
+
 }

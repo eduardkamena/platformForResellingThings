@@ -10,4 +10,5 @@ public class MyUserDetailsDTO {
     private String email;
     private String password;
     private Role role;
+
 }

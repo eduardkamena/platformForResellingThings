@@ -34,7 +34,7 @@ public class AdsServiceImpl implements AdsService {
     private final AdsMapper adsMapper;
     private final CommentMapper commentMapper;
 
-        @Override
+    @Override
     public Ads getAllAds() {
         List<AdEntity> adEntityList = adsRepository.findAll();
         List<Ad> adList = adsMapper.toDtos(adEntityList);
@@ -105,13 +105,6 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public byte[] getImage(String name) throws IOException {
         return imageService.getImage(name);
-    }
-
-    @Override
-    public Comment getCommentDto(int adId, int id) {
-        CommentEntity commentEntity = commentRepository.findCommentByIdAndAd_Id(id, adId)
-                .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"));
-        return commentMapper.toCommentDtoFromComment(commentEntity);
     }
 
     public String getUserNameOfComment(int id) {

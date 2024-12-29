@@ -1,5 +1,6 @@
 package ru.skypro.homework.security;
 
+import lombok.Setter;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,14 +13,11 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Component
+@Setter
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MyUserDetails implements UserDetails {
 
     private MyUserDetailsDTO myUserDetailsDto;
-
-    public void setMyUserDetailsDto(MyUserDetailsDTO myUserDetailsDto) {
-        this.myUserDetailsDto = myUserDetailsDto;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,4 +62,5 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
