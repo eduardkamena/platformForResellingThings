@@ -1,18 +1,20 @@
 package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class Login {
+
+    @Schema(description = "пароль")
+    @NotBlank(message = "Пароль не может быть пустым")
+    @Size(min = 8, max = 16,
+            message = "Длина пароля должна быть от 8 до 16 символов")
+    private String password;
 
     @Schema(description = "логин")
     @NotBlank(message = "Имя пользователя не может быть пустым")
@@ -20,11 +22,5 @@ public class Login {
             message = "Имя пользователя должно содержать от 4 до 32 символов")
     @Email(message = "Email адрес должен быть в формате user@example.com")
     private String username;
-
-    @Schema(description = "пароль")
-    @NotBlank(message = "Пароль не может быть пустым")
-    @Size(min = 8, max = 16,
-            message = "Длина пароля должна быть от 8 до 16 символов")
-    private String password;
 
 }

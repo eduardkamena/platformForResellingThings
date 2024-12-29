@@ -1,20 +1,15 @@
 package ru.skypro.homework.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.entity.ModelImage;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 public interface ImageService {
 
-    ModelImage updateEntitiesPhoto(MultipartFile image, ModelImage entity) throws IOException;
+    String saveImage(MultipartFile image, String name);
 
-    boolean saveFileOnDisk(MultipartFile image, Path filePath) throws IOException;
+    byte[] getImage(String name) throws IOException;
 
-    byte[] getPhotoFromDisk(Image image) throws NoSuchFieldException;
-
-    String getExtension(String fileName);
+    void deleteFileIfNotNull(String path);
 
 }

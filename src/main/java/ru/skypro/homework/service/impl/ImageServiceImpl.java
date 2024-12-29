@@ -4,109 +4,66 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.entity.ModelImage;
-import ru.skypro.homework.mapper.UserMapper;
-import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
-import ru.skypro.homework.service.LoggingMethod;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
+import java.util.UUID;
 
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
-
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-    private final ImageRepository imageRepository;
-    private final UserMapper userMapper;
-    private final LoggingMethod loggingMethod;
-
-    @Value("${path.to.photos.folder}")
-    private String photoDir;
+    @Value("${image.dir.path}")
+    private String imageDir;
 
     @Override
-    public ModelImage updateEntitiesPhoto(MultipartFile image, ModelImage entity) throws IOException {
-        //если у сущности уже есть картинка, то нужно ее удалить
-        if (entity.getImage() != null) {
-            imageRepository.delete(entity.getImage());
-        }
+    public String saveImage(MultipartFile image, String name) {
 
-        //заполняем поля photo и сохраняем фото в БД
-        Image photoEntity = userMapper.mapMultipartFileToImage(image);
-        log.info("Создана сущность photoEntity - {}, {}, {}", photoEntity.getId(), photoEntity.getMediaType(), photoEntity.getFilePath());
-        entity.setImage(photoEntity);
-        imageRepository.save(photoEntity);
-
-        //адрес до директории хранения фото на ПК
-        Path filePath = Path.of(photoDir, entity.getImage().getId() + "."
-                + this.getExtension(Objects.requireNonNull(image.getOriginalFilename())));
-        log.info("путь к файлу для хранения фото на ПК: {}", filePath);
-
-        //добавляем в сущность фото путь где оно хранится на ПК
-        entity.getImage().setFilePath(filePath.toString());
-
-        //добавляем в сущность путь на ПК
-        entity.setFilePath(filePath.toString());
-
-        //сохранение на ПК
-        this.saveFileOnDisk(image, filePath);
-
-        return entity;
-    }
-
-
-    /**
-     * Метод сохраняет изображение на диск
-     *
-     * @param image    - изображение
-     * @param filePath - путь, куда будет сохранено изображение
-     * @return boolean
-     * @throws IOException
-     */
-    @Override
-    public boolean saveFileOnDisk(MultipartFile image, Path filePath) throws IOException {
-
-        log.info("Запущен метод сервиса {}", loggingMethod.getMethodName());
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-        try (InputStream is = image.getInputStream();
-             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-             BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-            bis.transferTo(bos);
-        }
-        return true;
-    }
-
-    @Override
-    public byte[] getPhotoFromDisk(Image image) throws NoSuchFieldException {
-        Path path1 = Path.of(image.getFilePath());
+        String extension = StringUtils.getFilenameExtension(image.getOriginalFilename());
+        String filename = UUID.randomUUID() + "." + extension;
+        Path filePath = Path.of(imageDir, filename);
         try {
-            return Files.readAllBytes(path1);
+            Files.write(filePath, image.getBytes());
         } catch (IOException e) {
-            throw new NoSuchFieldException("Искомый файл аватара или фото объявления, отсутствует на ПК\n" +
-                    "Поиск файла перенаправлен в БД");
+            log.error("Error writing file: {}", e.getMessage());
+            throw new RuntimeException("Error writing file", e);
         }
+        log.trace("Loaded file, name: ", filename);
+        return name + "/image/" + filename;
     }
 
-    /**
-     * Метод получает расширение изображения
-     *
-     * @param fileName - полное название изображения
-     * @return расширение изображения
-     */
     @Override
-    public String getExtension(String fileName) {
-        log.info("Запущен метод сервиса {}", loggingMethod.getMethodName());
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    public byte[] getImage(String name) throws IOException {
+        String fullPath = imageDir + "/" + name;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            return Files.readAllBytes(Path.of(fullPath));
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteFileIfNotNull(String path) {
+        if (path == null) {
+            return;
+        }
+        String fileName = path.substring(path.lastIndexOf('/'));
+        File fileToDelete = new File(imageDir + fileName);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                log.trace("File successfully deleted");
+            } else {
+                log.trace("Failed to delete file");
+            }
+        } else {
+            log.trace("File not found");
+        }
     }
 
 }

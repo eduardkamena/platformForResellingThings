@@ -1,9 +1,7 @@
 databaseChangeLog:
   - include:
-      file: liquibase/migration/images_table.sql
+      file: liquibase/migration/users-table.sql
   - include:
-      file: liquibase/migration/users_table.sql
+      file: liquibase/migration/ads-table.sql
   - include:
-      file: liquibase/migration/ads_table.sql
-  - include:
-      file: liquibase/migration/comments_table.sql
+      file: liquibase/migration/comments-table.sql
