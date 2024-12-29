@@ -4,15 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.announce.AdsDto;
-import ru.skypro.homework.dto.announce.ResponseWrapperAds;
-import ru.skypro.homework.dto.announce.CreateAds;
-import ru.skypro.homework.dto.announce.FullAds;
-import ru.skypro.homework.dto.comment.CommentDto;
-import ru.skypro.homework.dto.comment.CreateComment;
-import ru.skypro.homework.dto.comment.ResponseWrapperComment;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.Ads;
 import ru.skypro.homework.entity.Comment;
+import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.exception.CommentNotFoundException;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
@@ -41,14 +36,13 @@ public class AdsServiceImpl implements AdsService {
     private final AdsMapper adsMapper;
     private final CommentMapper commentMapper;
 
-
-    @Override
+        @Override
     public ResponseWrapperAds getAllAds() {
         List<Ads> adsList = adsRepository.findAll();
         List<AdsDto> adsDtoList = adsMapper.toDtos(adsList);
         ResponseWrapperAds responseWrapperAds = new ResponseWrapperAds();
         responseWrapperAds.setCount(adsList.size());
-        responseWrapperAds.setResult(adsDtoList);
+        responseWrapperAds.setResults(adsDtoList);
         return responseWrapperAds;
     }
 
@@ -59,7 +53,7 @@ public class AdsServiceImpl implements AdsService {
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email)));
         List<AdsDto> adsDtoList = adsMapper.toDtos(adsList);
         ResponseWrapperAds responseWrapperAds = new ResponseWrapperAds();
-        responseWrapperAds.setResult(adsDtoList);
+        responseWrapperAds.setResults(adsDtoList);
         responseWrapperAds.setCount(adsList.size());
         return responseWrapperAds;
     }
@@ -75,12 +69,14 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toAdsDto(ads);
     }
 
-       @Override
+
+    @Override
     public FullAds getAds(Integer id) {
         Ads ads = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("Ads not found by id: " + id));
         return adsMapper.toFullAds(ads);
     }
+
 
     @Transactional
     @Override
@@ -129,6 +125,7 @@ public class AdsServiceImpl implements AdsService {
         log.trace("Added comment with id: ", comment.getId());
         return commentMapper.toCommentDtoFromComment(comment);
     }
+
 
 
     @Override

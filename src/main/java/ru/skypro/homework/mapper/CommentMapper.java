@@ -3,8 +3,9 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import ru.skypro.homework.dto.comment.CommentDto;
-import ru.skypro.homework.dto.comment.CreateComment;
+import org.mapstruct.factory.Mappers;
+import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.CreateComment;
 import ru.skypro.homework.entity.Comment;
 
 import java.util.List;
@@ -26,5 +27,4 @@ public interface CommentMapper {
     @Mapping(target = "user.image",ignore = true)
     @Mapping(target = "user.firstName",ignore = true)
     void updateCommentFromCommentDto(CommentDto commentDto,@MappingTarget Comment comment);
-
 }

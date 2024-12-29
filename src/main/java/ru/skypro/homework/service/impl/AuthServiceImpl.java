@@ -13,7 +13,6 @@ import ru.skypro.homework.service.AuthService;
 
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor

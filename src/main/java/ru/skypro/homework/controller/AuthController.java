@@ -1,5 +1,9 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,7 @@ import static ru.skypro.homework.dto.Role.USER;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Authentication", description = "API для аутентификации и авторизации")
 public class AuthController {
 
     private final AuthService authService;

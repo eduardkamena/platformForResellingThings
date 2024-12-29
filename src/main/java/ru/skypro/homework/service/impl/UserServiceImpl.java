@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.user.NewPassword;
-import ru.skypro.homework.dto.user.UserDto;
+import ru.skypro.homework.dto.NewPassword;
+import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
@@ -28,7 +28,8 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
     private final UserMapper userMapper;
 
-       @Override
+
+    @Override
     public boolean setPassword(NewPassword newPassword, String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {

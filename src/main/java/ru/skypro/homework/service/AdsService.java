@@ -1,13 +1,7 @@
 package ru.skypro.homework.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.announce.AdsDto;
-import ru.skypro.homework.dto.announce.ResponseWrapperAds;
-import ru.skypro.homework.dto.announce.CreateAds;
-import ru.skypro.homework.dto.announce.FullAds;
-import ru.skypro.homework.dto.comment.CommentDto;
-import ru.skypro.homework.dto.comment.CreateComment;
-import ru.skypro.homework.dto.comment.ResponseWrapperComment;
+import ru.skypro.homework.dto.*;
 
 import java.io.IOException;
 
@@ -38,5 +32,4 @@ public interface AdsService {
     byte[] getImage(String name) throws IOException;
 
     CommentDto getCommentDto(Integer adId,Integer id);
-
 }

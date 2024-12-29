@@ -1,7 +1,6 @@
-package ru.skypro.homework.dto.user;
+package ru.skypro.homework.dto;
 
 import lombok.Data;
-import ru.skypro.homework.dto.Role;
 
 @Data
 public class MyUserDetailsDto {

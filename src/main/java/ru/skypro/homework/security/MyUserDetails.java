@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
-import ru.skypro.homework.dto.user.MyUserDetailsDto;
+import ru.skypro.homework.dto.MyUserDetailsDto;
 
 import java.util.Collection;
 import java.util.Collections;
