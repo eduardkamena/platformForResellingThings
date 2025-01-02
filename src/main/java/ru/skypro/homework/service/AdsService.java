@@ -11,7 +11,7 @@ public interface AdsService {
 
     Ads getAdsMe(String email);
 
-    Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image);
+    Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image) throws IOException;
 
     ExtendedAd getAds(int id);
 
@@ -19,7 +19,7 @@ public interface AdsService {
 
     Ad updateAds(CreateOrUpdateAd createOrUpdateAd, int id);
 
-    void updateImage(int id, MultipartFile image);
+    void updateImage(int id, MultipartFile image) throws IOException;
 
     byte[] getImage(String name) throws IOException;
 

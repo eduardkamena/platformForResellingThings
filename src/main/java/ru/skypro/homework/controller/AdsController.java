@@ -34,7 +34,7 @@ public class AdsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Ad> addAd(Authentication authentication,
                                     @RequestPart("properties") CreateOrUpdateAd createOrUpdateAd,
-                                    @RequestPart("image") MultipartFile image) {
+                                    @RequestPart("image") MultipartFile image) throws IOException {
         return ResponseEntity.ok(adsService.addAd(createOrUpdateAd, authentication.getName(), image));
     }
 
@@ -63,7 +63,7 @@ public class AdsController {
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestParam MultipartFile image) {
+    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestParam MultipartFile image) throws IOException {
         adsService.updateImage(id, image);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }

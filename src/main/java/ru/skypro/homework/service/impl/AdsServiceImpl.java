@@ -10,7 +10,6 @@ import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.exception.CommentNotFoundException;
 import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.mapper.AdsMapper;
-import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.repository.UserRepository;
@@ -31,7 +30,6 @@ public class AdsServiceImpl implements AdsService {
     private final CommentRepository commentRepository;
     private final ImageService imageService;
     private final AdsMapper adsMapper;
-    private final CommentMapper commentMapper;
 
     @Override
     public Ads getAllAds() {
@@ -55,7 +53,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image) {
+    public Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image) throws IOException {
         AdEntity adEntity = adsMapper.toAdsFromCreateAds(createOrUpdateAd);
         adEntity.setAuthor(userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email)));
@@ -93,12 +91,18 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public void updateImage(int id, MultipartFile image) {
+    public void updateImage(int id, MultipartFile image) throws IOException {
+        log.info("updateImage method from AdsService was invoked");
+
         AdEntity adEntity = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("AdEntity not found"));
         imageService.deleteFileIfNotNull(adEntity.getImage());
+        log.warn("Successfully deleted old Ad image {}", adEntity.getImage());
+
         adEntity.setImage(imageService.saveImage(image, "/ads"));
         adsRepository.save(adEntity);
+
+        log.info("updateImage method successfully updated ad image {}", adEntity.getImage());
     }
 
     @Override

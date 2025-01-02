@@ -64,13 +64,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAvatar(MultipartFile image, String email) {
+    public void updateAvatar(MultipartFile image, String email) throws IOException {
+        log.info("updateAvatar method from UserService was invoked");
+
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserWithEmailNotFoundException(email));
         imageService.deleteFileIfNotNull(userEntity.getImage());
+        log.warn("Successfully delete old User avatar {}", userEntity.getImage());
+
         userEntity.setImage(imageService.saveImage(image, "/users"));
         userRepository.save(userEntity);
-        log.info("Avatar updated");
+
+        log.info("updateAvatar method successfully update user image {}", userEntity.getImage());
     }
 
     @Override
