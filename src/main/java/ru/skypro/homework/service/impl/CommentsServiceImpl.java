@@ -33,11 +33,15 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public Comments getComments(int id) {
+        log.info("getComments method from CommentsService was invoked");
+
         List<CommentEntity> commentEntityList = commentRepository.findAllByAdId(id);
         List<Comment> comments = commentMapper.toListCommentDTOFromListCommentEntity(commentEntityList);
         Comments responseWrapperComment = new Comments();
         responseWrapperComment.setResults(comments);
         responseWrapperComment.setCount(comments.size());
+
+        log.info("getComments method from CommentsService was invoked");
         return responseWrapperComment;
     }
 
@@ -74,8 +78,7 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDTOFromCommentEntity(commentEntity);
     }
 
-    @Override
-    public String getUserNameOfComment(int id) {
+    public String getCommentAuthor(int id) {
         return commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"))
                 .getAuthor().getEmail();
