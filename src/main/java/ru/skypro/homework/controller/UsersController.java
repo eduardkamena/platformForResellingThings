@@ -1,6 +1,7 @@
 package ru.skypro.homework.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 
+@Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
@@ -24,30 +26,35 @@ public class UsersController {
     @PostMapping("/set_password")
     public ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword newPassword,
                                                    Authentication authentication) {
+        log.info("setPassword method from UsersController was invoked for User: {}", authentication.getName());
         userService.setPassword(newPassword, authentication.getName());
         return ResponseEntity.ok(newPassword);
     }
 
     @GetMapping("/me")
     public ResponseEntity<User> getUser(Authentication authentication) {
+        log.info("getUser method from UsersController was invoked for User: {}", authentication.getName());
         return ResponseEntity.ok(userService.getUser(authentication.getName()));
     }
 
     @PatchMapping("/me")
     public ResponseEntity<User> updateUser(@RequestBody User user,
                                            Authentication authentication) {
+        log.info("updateUser method from UsersController was invoked for User: {}", authentication.getName());
         return ResponseEntity.ok(userService.updateUser(user, authentication.getName()));
     }
 
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateUserImage(@RequestParam MultipartFile image,
                                              Authentication authentication) throws IOException {
+        log.info("updateUserImage method from UsersController was invoked for User: {} with ImageSize: {}", authentication.getName(), image.getSize());
         userService.updateAvatar(image, authentication.getName());
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/image/{name}", produces = {MediaType.IMAGE_PNG_VALUE})
     public byte[] getImages(@PathVariable String name) throws IOException {
+        log.info("getImages method from UsersController was invoked for Image: {}", name);
         return userService.getImage(name);
     }
 

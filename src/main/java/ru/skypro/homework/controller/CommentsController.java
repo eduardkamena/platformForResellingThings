@@ -23,6 +23,7 @@ public class CommentsController {
 
     @GetMapping("/{id}/comments")
     public ResponseEntity<Comments> getComments(@PathVariable int id) {
+        log.info("getComments method from CommentsController was invoked");
         return ResponseEntity.ok(commentsService.getComments(id));
     }
 
@@ -30,23 +31,29 @@ public class CommentsController {
     public ResponseEntity<Comment> addComment(@PathVariable int id,
                                               @RequestBody CreateOrUpdateComment createOrUpdateComment,
                                               Authentication authentication) {
+        log.info("addComment method from CommentsController was invoked with commentText: {} and with userName: {}",
+                createOrUpdateComment.getText(), authentication.getName());
         return ResponseEntity.ok(commentsService.addComment(id, createOrUpdateComment, authentication.getName()));
     }
 
     @PreAuthorize("hasRole('ADMIN') or " +
-            "@commentsServiceImpl.getUserNameOfComment(#commentId)==authentication.principal.username")
+            "@commentsServiceImpl.getCommentAuthor(#commentId)==authentication.principal.username")
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int adId, @PathVariable int commentId) {
+        log.info("deleteComment method from CommentsController was invoked for adId: {} and commentId: {}",
+                adId, commentId);
         commentsService.deleteComment(adId, commentId);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('ADMIN') or " +
-            "@commentsServiceImpl.getUserNameOfComment(#commentId)==authentication.principal.username")
+            "@commentsServiceImpl.getCommentAuthor(#commentId)==authentication.principal.username")
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable int adId,
                                                  @PathVariable int commentId,
                                                  @RequestBody CreateOrUpdateComment createOrUpdateComment) {
+        log.info("updateComment method from CommentsController was invoked for adId: {}, commentId: {} and with newComment: {}",
+                adId, commentId, createOrUpdateComment.getText());
         return ResponseEntity.ok(commentsService.updateComment(adId, commentId, createOrUpdateComment));
     }
 

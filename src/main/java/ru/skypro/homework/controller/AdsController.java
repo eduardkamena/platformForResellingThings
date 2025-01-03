@@ -28,6 +28,7 @@ public class AdsController {
 
     @GetMapping
     public ResponseEntity<Ads> getAllAds() {
+        log.info("getAllAds method from AdsController was invoked");
         return ResponseEntity.ok(adsService.getAllAds());
     }
 
@@ -35,17 +36,20 @@ public class AdsController {
     public ResponseEntity<Ad> addAd(Authentication authentication,
                                     @RequestPart("properties") CreateOrUpdateAd createOrUpdateAd,
                                     @RequestPart("image") MultipartFile image) throws IOException {
+        log.info("addAd method from AdsController was invoked with adTitle: {} and imageSize: {}", createOrUpdateAd.getTitle(), image.getSize());
         return ResponseEntity.ok(adsService.addAd(createOrUpdateAd, authentication.getName(), image));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAd> getAds(@PathVariable int id) {
+        log.info("getAds method from AdsController was invoked for Ad id: {}", id);
         return ResponseEntity.ok(adsService.getAds(id));
     }
 
     @PreAuthorize("hasRole('ADMIN') or @adsServiceImpl.getAds(#id).getEmail() == authentication.principal.username")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAd(@PathVariable int id) {
+        log.info("removeAd method from AdsController was invoked for Ad id: {}", id);
         adsService.removeAd(id);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
@@ -54,22 +58,26 @@ public class AdsController {
     @PatchMapping("/{id}")
     public ResponseEntity<Ad> updateAds(@RequestBody CreateOrUpdateAd createOrUpdateAd,
                                         @PathVariable int id) {
+        log.info("updateAds method from AdsController was invoked for Ad id: {}", id);
         return ResponseEntity.ok(adsService.updateAds(createOrUpdateAd, id));
     }
 
     @GetMapping("/me")
     public ResponseEntity<Ads> getAdsMe(Authentication authentication) {
+        log.info("getAdsMe method from AdsController was invoked for Username: {}", authentication.getName());
         return ResponseEntity.ok(adsService.getAdsMe(authentication.getName()));
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateImage(@PathVariable int id, @RequestParam MultipartFile image) throws IOException {
+        log.info("updateImage method from AdsController was invoked for Ad id: {} and imageSize: {}", id, image.getSize());
         adsService.updateImage(id, image);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "/image/{name}", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImages(@PathVariable String name) throws IOException {
+        log.info("getImages method from AdsController was invoked for imageName: {}", name);
         return adsService.getImage(name);
     }
 

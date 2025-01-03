@@ -1,6 +1,7 @@
 package ru.skypro.homework.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import ru.skypro.homework.service.RegisterService;
 
 import static ru.skypro.homework.dto.Role.USER;
 
+@Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +24,9 @@ public class RegisterController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Register register) {
+
+        log.info("register method from RegisterController was invoked");
+
         Role role = register.getRole() == null ? USER : register.getRole();
         if (registerService.register(register, role)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
