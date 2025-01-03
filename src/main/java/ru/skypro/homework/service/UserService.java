@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface UserService {
 
-    boolean setPassword(NewPassword newPassword, String email);
+    void setPassword(NewPassword newPassword, String email);
 
     User getUser(String email);
 

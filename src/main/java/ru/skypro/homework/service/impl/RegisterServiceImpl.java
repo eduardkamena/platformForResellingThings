@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.exception.UserAlreadyExistException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.RegisterService;
@@ -23,14 +24,15 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public boolean register(Register register, Role role) {
         if (userRepository.findByEmail(register.getUsername()).isPresent()) {
-            return false;
+            log.error("User already exists with username: {}", register.getUsername());
+            throw new UserAlreadyExistException("User already exists with username: " + register.getUsername());
         }
-        UserEntity userEntity = userMapper.toUser(register);
+        UserEntity userEntity = userMapper.toUserEntityFromRegisterDTO(register);
         userEntity.setEmail(userEntity.getEmail().toLowerCase());
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
         userEntity.setRole(role);
         userRepository.save(userEntity);
-        log.info("Registered a new userEntity");
+        log.info("Registered a new user with username: {}", register.getUsername());
         return true;
     }
 

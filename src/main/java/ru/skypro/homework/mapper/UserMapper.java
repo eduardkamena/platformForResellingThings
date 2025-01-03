@@ -11,10 +11,10 @@ import ru.skypro.homework.entity.UserEntity;
 public interface UserMapper {
 
     @Mapping(source = "username", target = "email")
-    UserEntity toUser(Register register);
+    UserEntity toUserEntityFromRegisterDTO(Register register);
 
-    MyUserDetailsDTO toMyUserDetailsDto(UserEntity userEntity);
+    MyUserDetailsDTO toMyUserDetailsDTOFromUserEntity(UserEntity userEntity);
 
-    User toUserDto(UserEntity userEntity);
+    User toUserDTOFromUserEntity(UserEntity userEntity);
 
 }

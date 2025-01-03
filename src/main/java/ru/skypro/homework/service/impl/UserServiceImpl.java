@@ -9,7 +9,6 @@ import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.exception.UserNotFoundException;
-import ru.skypro.homework.exception.UserWithEmailNotFoundException;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
@@ -29,26 +28,23 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public boolean setPassword(NewPassword newPassword, String email) {
+    public void setPassword(NewPassword newPassword, String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             UserEntity userEntity = optionalUser.get();
             if (encoder.matches(newPassword.getCurrentPassword(), userEntity.getPassword())) {
                 userEntity.setPassword(encoder.encode(newPassword.getNewPassword()));
                 userRepository.save(userEntity);
-                log.info("Updated password");
-                return true;
+                log.info("Successfully updated password for user {}", email);
             }
         }
-        log.info("Password not update");
-        return false;
     }
 
     @Override
     public User getUser(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserWithEmailNotFoundException(email));
-        return userMapper.toUserDto(userEntity);
+                .orElseThrow(() -> new UserNotFoundException(email));
+        return userMapper.toUserDTOFromUserEntity(userEntity);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPhone(user.getPhone());
         userRepository.save(userEntity);
         log.info("UserEntity updated");
-        return userMapper.toUserDto(userEntity);
+        return userMapper.toUserDTOFromUserEntity(userEntity);
     }
 
     @Override
@@ -68,7 +64,7 @@ public class UserServiceImpl implements UserService {
         log.info("updateAvatar method from UserService was invoked");
 
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserWithEmailNotFoundException(email));
+                .orElseThrow(() -> new UserNotFoundException(email));
         imageService.deleteFileIfNotNull(userEntity.getImage());
         log.warn("Successfully delete old User avatar {}", userEntity.getImage());
 

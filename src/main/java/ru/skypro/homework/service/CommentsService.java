@@ -14,4 +14,6 @@ public interface CommentsService {
 
     Comment updateComment(int adId, int id, CreateOrUpdateComment createOrUpdateComment);
 
+    String getUserNameOfComment(int id);
+
 }

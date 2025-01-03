@@ -17,7 +17,7 @@ public class CreateOrUpdateAd {
 
     @Schema(description = "цена объявления")
     @NotBlank(message = "Должна быть указана стоимость")
-    @Size(min = 0, max = 10000000,
+    @Size(max = 10000000,
             message = "Цена должна быть указана в диапазоне от 0 до 10_000_000")
     private int price;
 

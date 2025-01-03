@@ -11,14 +11,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    List<Comment> toListDto(List<CommentEntity> commentEntityList);
+    List<Comment> toListCommentDTOFromListCommentEntity(List<CommentEntity> commentEntityList);
 
-    CommentEntity toCommentFromCreateComment(CreateOrUpdateComment createOrUpdateComment);
+    CommentEntity toCommentEntityFromCreateOrUpdateCommentDTO(CreateOrUpdateComment createOrUpdateComment);
 
     @Mapping(target = "author", source = "author.id")
     @Mapping(target = "authorImage", source = "author.image")
     @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "pk", source = "id")
-    Comment toCommentDtoFromComment(CommentEntity commentEntity);
+    Comment toCommentDTOFromCommentEntity(CommentEntity commentEntity);
 
 }

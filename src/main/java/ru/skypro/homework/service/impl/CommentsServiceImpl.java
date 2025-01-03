@@ -8,8 +8,10 @@ import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
+import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.exception.AdsNotFoundException;
 import ru.skypro.homework.exception.CommentNotFoundException;
+import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentRepository;
@@ -32,7 +34,7 @@ public class CommentsServiceImpl implements CommentsService {
     @Override
     public Comments getComments(int id) {
         List<CommentEntity> commentEntityList = commentRepository.findAllByAdId(id);
-        List<Comment> comments = commentMapper.toListDto(commentEntityList);
+        List<Comment> comments = commentMapper.toListCommentDTOFromListCommentEntity(commentEntityList);
         Comments responseWrapperComment = new Comments();
         responseWrapperComment.setResults(comments);
         responseWrapperComment.setCount(comments.size());
@@ -42,21 +44,24 @@ public class CommentsServiceImpl implements CommentsService {
     @Override
     public Comment addComment(int id, CreateOrUpdateComment createOrUpdateComment, String email) {
         AdEntity adEntity = adsRepository.findById(id)
-                .orElseThrow(() -> new AdsNotFoundException("AdEntity not found"));
-        CommentEntity commentEntity = commentMapper.toCommentFromCreateComment(createOrUpdateComment);
+                .orElseThrow(() -> new AdsNotFoundException("AdEntity not found with id: " + id));
+        UserEntity author = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        CommentEntity commentEntity = commentMapper.toCommentEntityFromCreateOrUpdateCommentDTO(createOrUpdateComment);
         commentEntity.setAd(adEntity);
         commentEntity.setCreatedAt(System.currentTimeMillis());
-        commentEntity.setAuthor(userRepository.findByEmail(email).get());
+        commentEntity.setAuthor(author);
         commentRepository.save(commentEntity);
-        log.info("Added commentEntity with id: ", commentEntity.getId());
-        return commentMapper.toCommentDtoFromComment(commentEntity);
+        log.info("Added comment with id: {} by user: {} for ad: {}", commentEntity.getId(), email, adEntity.getId());
+        return commentMapper.toCommentDTOFromCommentEntity(commentEntity);
     }
 
     @Override
     @Transactional
     public void deleteComment(int adId, int id) {
         commentRepository.deleteByAdIdAndId(adId, id);
-        log.info("Deleted comment with id: ", id);
+        log.info("Deleted comment with id: {}", id);
     }
 
     @Override
@@ -65,8 +70,15 @@ public class CommentsServiceImpl implements CommentsService {
                 .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"));
         commentEntity.setText(createOrUpdateComment.getText());
         commentRepository.save(commentEntity);
-        log.info("Updated commentEntity with id: ", id);
-        return commentMapper.toCommentDtoFromComment(commentEntity);
+        log.info("Updated commentEntity with id: {}", id);
+        return commentMapper.toCommentDTOFromCommentEntity(commentEntity);
+    }
+
+    @Override
+    public String getUserNameOfComment(int id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFoundException("CommentEntity not found"))
+                .getAuthor().getEmail();
     }
 
 }
