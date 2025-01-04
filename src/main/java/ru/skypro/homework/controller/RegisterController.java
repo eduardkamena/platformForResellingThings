@@ -17,6 +17,18 @@ import ru.skypro.homework.service.RegisterService;
 
 import static ru.skypro.homework.dto.Role.USER;
 
+/**
+ * Контроллер для управления регистрацией пользователей.
+ * <p>
+ * Этот контроллер предоставляет REST API для выполнения операций, связанных с регистрацией пользователей,
+ * таких как создание нового аккаунта.
+ * </p>
+ *
+ * @see RestController
+ * @see Tag
+ * @see CrossOrigin
+ * @see Slf4j
+ */
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -26,6 +38,22 @@ public class RegisterController {
 
     private final RegisterService registerService;
 
+    /**
+     * Регистрирует нового пользователя.
+     * <p>
+     * Этот метод принимает данные для регистрации (логин, пароль и роль) и создает новый аккаунт.
+     * В случае успешной регистрации возвращается статус HTTP 201 (Created). Если регистрация невозможна
+     * (например, пользователь уже существует), возвращается статус HTTP 403 (Forbidden).
+     * </p>
+     *
+     * @param register объект {@link Register}, содержащий данные для регистрации (логин, пароль и роль).
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 201 (Created) в случае успешной регистрации,
+     *         или статусом HTTP 403 (Forbidden) в случае неудачи.
+     * @see Register
+     * @see Role
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Регистрация",
             summary = "Регистрация пользователя",

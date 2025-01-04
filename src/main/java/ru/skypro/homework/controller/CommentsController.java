@@ -18,6 +18,19 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.service.CommentsService;
 
+/**
+ * Контроллер для управления комментариями к объявлениям.
+ * <p>
+ * Этот контроллер предоставляет REST API для выполнения операций с комментариями, таких как:
+ * получение комментариев к объявлению, добавление нового комментария, обновление и удаление существующих комментариев.
+ * </p>
+ *
+ * @see RestController
+ * @see RequestMapping
+ * @see Tag
+ * @see CrossOrigin
+ * @see Slf4j
+ */
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,6 +41,15 @@ public class CommentsController {
 
     private final CommentsService commentsService;
 
+    /**
+     * Получает все комментарии для указанного объявления.
+     *
+     * @param id идентификатор объявления.
+     * @return {@link ResponseEntity} с объектом {@link Comments}, содержащим список комментариев, и статусом HTTP 200 (OK).
+     * @see Comments
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Комментарии",
             summary = "Получение комментариев объявления",
@@ -56,6 +78,18 @@ public class CommentsController {
         return ResponseEntity.ok(commentsService.getComments(id));
     }
 
+    /**
+     * Добавляет новый комментарий к указанному объявлению.
+     *
+     * @param id                    идентификатор объявления.
+     * @param createOrUpdateComment данные для создания или обновления комментария.
+     * @param authentication        объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK).
+     * @see Comment
+     * @see CreateOrUpdateComment
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Комментарии",
             summary = "Добавление комментария к объявлению",
@@ -87,6 +121,19 @@ public class CommentsController {
         return ResponseEntity.ok(commentsService.addComment(id, createOrUpdateComment, authentication.getName()));
     }
 
+    /**
+     * Удаляет комментарий по его идентификатору.
+     * <p>
+     * Доступно только администраторам или авторам комментария.
+     * </p>
+     *
+     * @param adId      идентификатор объявления.
+     * @param commentId идентификатор комментария.
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @see Operation
+     * @see ApiResponse
+     * @see PreAuthorize
+     */
     @Operation(
             tags = "Комментарии",
             summary = "Удаление комментария",
@@ -119,6 +166,22 @@ public class CommentsController {
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Обновляет комментарий по его идентификатору.
+     * <p>
+     * Доступно только администраторам или авторам комментария.
+     * </p>
+     *
+     * @param adId                  идентификатор объявления.
+     * @param commentId             идентификатор комментария.
+     * @param createOrUpdateComment новые данные для комментария.
+     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK).
+     * @see Comment
+     * @see CreateOrUpdateComment
+     * @see Operation
+     * @see ApiResponse
+     * @see PreAuthorize
+     */
     @Operation(
             tags = "Комментарии",
             summary = "Обновление комментария",

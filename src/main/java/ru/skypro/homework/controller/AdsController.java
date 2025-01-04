@@ -22,6 +22,20 @@ import ru.skypro.homework.service.AdsService;
 
 import java.io.IOException;
 
+/**
+ * Контроллер для управления объявлениями.
+ * <p>
+ * Этот контроллер предоставляет REST API для выполнения операций с объявлениями, таких как:
+ * получение всех объявлений, добавление нового объявления, обновление и удаление существующих объявлений,
+ * а также управление изображениями объявлений.
+ * </p>
+ *
+ * @see RestController
+ * @see RequestMapping
+ * @see Tag
+ * @see CrossOrigin
+ * @see Slf4j
+ */
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -32,6 +46,19 @@ public class AdsController {
 
     private final AdsService adsService;
 
+    /**
+     * Получает все объявления.
+     * <p>
+     * Этот метод возвращает список всех объявлений, доступных в системе.
+     * Ответ возвращается в формате JSON.
+     * </p>
+     *
+     * @return {@link ResponseEntity} с объектом {@link Ads}, содержащим список всех объявлений, и статусом HTTP 200 (OK).
+     * @see Ads
+     * @see ResponseEntity
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Получение всех объявлений",
@@ -52,6 +79,23 @@ public class AdsController {
         return ResponseEntity.ok(adsService.getAllAds());
     }
 
+    /**
+     * Добавляет новое объявление.
+     * <p>
+     * Этот метод принимает данные объявления и изображение, после чего сохраняет их в системе.
+     * </p>
+     *
+     * @param authentication   объект аутентификации текущего пользователя.
+     * @param createOrUpdateAd данные для создания или обновления объявления.
+     * @param image            изображение объявления.
+     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 201 (Created).
+     * @throws IOException если возникает ошибка при обработке изображения.
+     * @see Ad
+     * @see CreateOrUpdateAd
+     * @see MultipartFile
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Добавление объявления",
@@ -78,6 +122,15 @@ public class AdsController {
         return ResponseEntity.ok(adsService.addAd(createOrUpdateAd, authentication.getName(), image));
     }
 
+    /**
+     * Получает информацию об объявлении по его идентификатору.
+     *
+     * @param id идентификатор объявления.
+     * @return {@link ResponseEntity} с объектом {@link ExtendedAd} и статусом HTTP 200 (OK).
+     * @see ExtendedAd
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Получение информации об объявлении",
@@ -106,6 +159,18 @@ public class AdsController {
         return ResponseEntity.ok(adsService.getAds(id));
     }
 
+    /**
+     * Удаляет объявление по его идентификатору.
+     * <p>
+     * Доступно только администраторам или владельцам объявления.
+     * </p>
+     *
+     * @param id идентификатор объявления.
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 204 (No Content).
+     * @see Operation
+     * @see ApiResponse
+     * @see PreAuthorize
+     */
     @Operation(
             tags = "Объявления",
             summary = "Удаление объявления",
@@ -136,6 +201,21 @@ public class AdsController {
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Обновляет информацию об объявлении.
+     * <p>
+     * Доступно только администраторам или владельцам объявления.
+     * </p>
+     *
+     * @param createOrUpdateAd новые данные для объявления.
+     * @param id               идентификатор объявления.
+     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 200 (OK).
+     * @see Ad
+     * @see CreateOrUpdateAd
+     * @see Operation
+     * @see ApiResponse
+     * @see PreAuthorize
+     */
     @Operation(
             tags = "Объявления",
             summary = "Обновление информации об объявлении",
@@ -170,6 +250,15 @@ public class AdsController {
         return ResponseEntity.ok(adsService.updateAds(createOrUpdateAd, id));
     }
 
+    /**
+     * Получает объявления текущего авторизованного пользователя.
+     *
+     * @param authentication объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с объектом {@link Ads} и статусом HTTP 200 (OK).
+     * @see Ads
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Получение объявлений авторизованного пользователя",
@@ -194,6 +283,19 @@ public class AdsController {
         return ResponseEntity.ok(adsService.getAdsMe(authentication.getName()));
     }
 
+    /**
+     * Обновляет изображение объявления.
+     * <p>
+     * Доступно только администраторам или владельцам объявления.
+     * </p>
+     *
+     * @param id    идентификатор объявления.
+     * @param image новое изображение.
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @throws IOException если возникает ошибка при обработке изображения.
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Обновление картинки объявления",
@@ -227,6 +329,15 @@ public class AdsController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    /**
+     * Получает изображение объявления по его имени.
+     *
+     * @param name имя изображения.
+     * @return массив байтов, представляющий изображение.
+     * @throws IOException если возникает ошибка при чтении изображения.
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Объявления",
             summary = "Получение картинки объявления",

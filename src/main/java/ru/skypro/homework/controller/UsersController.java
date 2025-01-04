@@ -20,6 +20,20 @@ import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 
+/**
+ * Контроллер для управления пользователями.
+ * <p>
+ * Этот контроллер предоставляет REST API для выполнения операций, связанных с пользователями,
+ * таких как обновление пароля, получение информации о пользователе, обновление данных пользователя
+ * и управление аватаром пользователя.
+ * </p>
+ *
+ * @see RestController
+ * @see RequestMapping
+ * @see Tag
+ * @see CrossOrigin
+ * @see Slf4j
+ */
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -30,6 +44,16 @@ public class UsersController {
 
     private final UserService userService;
 
+    /**
+     * Обновляет пароль авторизованного пользователя.
+     *
+     * @param newPassword    объект {@link NewPassword}, содержащий новый пароль.
+     * @param authentication объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с объектом {@link NewPassword} и статусом HTTP 200 (OK).
+     * @see NewPassword
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Пользователи",
             summary = "Обновление пароля",
@@ -56,6 +80,15 @@ public class UsersController {
         return ResponseEntity.ok(newPassword);
     }
 
+    /**
+     * Получает информацию об авторизованном пользователе.
+     *
+     * @param authentication объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK).
+     * @see User
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Пользователи",
             summary = "Получение информации об авторизованном пользователе",
@@ -80,6 +113,16 @@ public class UsersController {
         return ResponseEntity.ok(userService.getUser(authentication.getName()));
     }
 
+    /**
+     * Обновляет информацию об авторизованном пользователе.
+     *
+     * @param user           объект {@link User}, содержащий новые данные пользователя.
+     * @param authentication объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK).
+     * @see User
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Пользователи",
             summary = "Обновление информации об авторизованном пользователе",
@@ -105,6 +148,16 @@ public class UsersController {
         return ResponseEntity.ok(userService.updateUser(user, authentication.getName()));
     }
 
+    /**
+     * Обновляет аватар авторизованного пользователя.
+     *
+     * @param image          файл изображения для обновления аватара.
+     * @param authentication объект аутентификации текущего пользователя.
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @throws IOException если возникает ошибка при обработке изображения.
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Пользователи",
             summary = "Обновление аватара авторизованного пользователя",
@@ -127,6 +180,15 @@ public class UsersController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    /**
+     * Получает изображение пользователя по его имени.
+     *
+     * @param name имя изображения.
+     * @return массив байтов, представляющий изображение.
+     * @throws IOException если возникает ошибка при чтении изображения.
+     * @see Operation
+     * @see ApiResponse
+     */
     @Operation(
             tags = "Пользователи",
             summary = "Получение картинки пользователя",
