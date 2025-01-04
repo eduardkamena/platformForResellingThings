@@ -41,14 +41,14 @@ public class RegisterController {
     /**
      * Регистрирует нового пользователя.
      * <p>
-     * Этот метод принимает данные для регистрации (логин, пароль и роль) и создает новый аккаунт.
+     * Этот метод принимает данные для регистрации (логин, пароль, имя, фамилию, телефон и роль) и создает новый аккаунт.
      * В случае успешной регистрации возвращается статус HTTP 201 (Created). Если регистрация невозможна
-     * (например, пользователь уже существует), возвращается статус HTTP 403 (Forbidden).
+     * (например, пользователь уже существует), возвращается статус HTTP 400 (Bad Request).
      * </p>
      *
-     * @param register объект {@link Register}, содержащий данные для регистрации (логин, пароль и роль).
+     * @param register объект {@link Register}, содержащий данные для регистрации (логин, пароль, имя, фамилию, телефон и роль).
      * @return {@link ResponseEntity} с пустым телом и статусом HTTP 201 (Created) в случае успешной регистрации,
-     *         или статусом HTTP 403 (Forbidden) в случае неудачи.
+     * или статусом HTTP 400 (Bad Request) в случае неудачи.
      * @see Register
      * @see Role
      * @see Operation
@@ -77,7 +77,7 @@ public class RegisterController {
         if (registerService.register(register, role)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 

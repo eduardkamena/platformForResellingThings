@@ -7,6 +7,19 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * Класс DTO, представляющий данные для авторизации пользователя.
+ * <p>
+ * Этот класс содержит логин (email) и пароль пользователя, которые валидируются
+ * с использованием аннотаций для проверки корректности введенных данных.
+ * </p>
+ *
+ * @see Data
+ * @see Schema
+ * @see NotBlank
+ * @see Size
+ * @see Email
+ */
 @Data
 public class Login {
 

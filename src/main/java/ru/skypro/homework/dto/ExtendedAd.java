@@ -3,6 +3,16 @@ package ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * Класс DTO, представляющий расширенную информацию об объявлении.
+ * <p>
+ * Этот класс содержит подробные данные об объявлении, включая информацию об авторе,
+ * описание товара, контактные данные, изображение, стоимость и заголовок.
+ * </p>
+ *
+ * @see Data
+ * @see Schema
+ */
 @Data
 public class ExtendedAd {
 

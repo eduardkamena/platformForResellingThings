@@ -7,6 +7,20 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * Класс DTO, представляющий данные для обновления информации о пользователе.
+ * <p>
+ * Этот класс содержит информацию, необходимую для обновления данных пользователя,
+ * такую как имя, фамилия и телефон. Поля валидируются с использованием аннотаций
+ * для проверки корректности введенных данных.
+ * </p>
+ *
+ * @see Data
+ * @see Schema
+ * @see NotBlank
+ * @see Size
+ * @see Pattern
+ */
 @Data
 public class UpdateUser {
 

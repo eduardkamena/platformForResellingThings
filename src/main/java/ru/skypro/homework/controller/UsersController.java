@@ -49,7 +49,8 @@ public class UsersController {
      *
      * @param newPassword    объект {@link NewPassword}, содержащий новый пароль.
      * @param authentication объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с объектом {@link NewPassword} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link NewPassword} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) в случае неудачи.
      * @see NewPassword
      * @see Operation
      * @see ApiResponse
@@ -84,7 +85,8 @@ public class UsersController {
      * Получает информацию об авторизованном пользователе.
      *
      * @param authentication объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) в случае неудачи.
      * @see User
      * @see Operation
      * @see ApiResponse
@@ -118,7 +120,8 @@ public class UsersController {
      *
      * @param user           объект {@link User}, содержащий новые данные пользователя.
      * @param authentication объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link User} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) в случае неудачи.
      * @see User
      * @see Operation
      * @see ApiResponse
@@ -153,7 +156,8 @@ public class UsersController {
      *
      * @param image          файл изображения для обновления аватара.
      * @param authentication объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) в случае неудачи.
      * @throws IOException если возникает ошибка при обработке изображения.
      * @see Operation
      * @see ApiResponse
@@ -181,10 +185,11 @@ public class UsersController {
     }
 
     /**
-     * Получает изображение пользователя по его имени.
+     * Получает изображение (аватар) пользователя по его имени.
      *
      * @param name имя изображения.
-     * @return массив байтов, представляющий изображение.
+     * @return массив байтов, представляющий изображение и статусом HTTP 200 (OK)
+     * или HTTP 404 (Not found) в случае неудачи.
      * @throws IOException если возникает ошибка при чтении изображения.
      * @see Operation
      * @see ApiResponse

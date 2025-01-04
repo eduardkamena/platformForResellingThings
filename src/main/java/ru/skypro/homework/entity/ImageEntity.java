@@ -6,6 +6,23 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Класс Entity, представляющий сущность изображения в базе данных.
+ * <p>
+ * Этот класс отображает таблицу "images" в базе данных и содержит информацию об изображении,
+ * такую как идентификатор, путь к файлу, размер файла, тип медиа и бинарные данные изображения.
+ * Изображения используются как картинки объявления, так и аватары пользователей.
+ * </p>
+ *
+ * @see Entity
+ * @see Data
+ * @see NoArgsConstructor
+ * @see Id
+ * @see GeneratedValue
+ * @see Column
+ * @see JsonIgnore
+ * @see Lob
+ */
 @Data
 @Entity(name = "images")
 @NoArgsConstructor

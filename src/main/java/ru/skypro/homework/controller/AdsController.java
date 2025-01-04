@@ -88,7 +88,8 @@ public class AdsController {
      * @param authentication   объект аутентификации текущего пользователя.
      * @param createOrUpdateAd данные для создания или обновления объявления.
      * @param image            изображение объявления.
-     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 201 (Created).
+     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 201 (Created)
+     * или HTTP 401 (Unauthorized) в случае неудачи.
      * @throws IOException если возникает ошибка при обработке изображения.
      * @see Ad
      * @see CreateOrUpdateAd
@@ -126,7 +127,8 @@ public class AdsController {
      * Получает информацию об объявлении по его идентификатору.
      *
      * @param id идентификатор объявления.
-     * @return {@link ResponseEntity} с объектом {@link ExtendedAd} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link ExtendedAd} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 404 (Not found) в случае неудачи.
      * @see ExtendedAd
      * @see Operation
      * @see ApiResponse
@@ -166,7 +168,8 @@ public class AdsController {
      * </p>
      *
      * @param id идентификатор объявления.
-     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 204 (No Content).
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 204 (No Content)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) / HTTP 404 (Not found) в случае неудачи.
      * @see Operation
      * @see ApiResponse
      * @see PreAuthorize
@@ -209,7 +212,8 @@ public class AdsController {
      *
      * @param createOrUpdateAd новые данные для объявления.
      * @param id               идентификатор объявления.
-     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link Ad} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) / HTTP 404 (Not found) в случае неудачи.
      * @see Ad
      * @see CreateOrUpdateAd
      * @see Operation
@@ -254,7 +258,8 @@ public class AdsController {
      * Получает объявления текущего авторизованного пользователя.
      *
      * @param authentication объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с объектом {@link Ads} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link Ads} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) в случае неудачи.
      * @see Ads
      * @see Operation
      * @see ApiResponse
@@ -291,7 +296,8 @@ public class AdsController {
      *
      * @param id    идентификатор объявления.
      * @param image новое изображение.
-     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) / HTTP 404 (Not found) в случае неудачи.
      * @throws IOException если возникает ошибка при обработке изображения.
      * @see Operation
      * @see ApiResponse
@@ -333,7 +339,8 @@ public class AdsController {
      * Получает изображение объявления по его имени.
      *
      * @param name имя изображения.
-     * @return массив байтов, представляющий изображение.
+     * @return массив байтов, представляющий изображение и статусом HTTP 200 (OK)
+     * или HTTP 404 (Not found) в случае неудачи.
      * @throws IOException если возникает ошибка при чтении изображения.
      * @see Operation
      * @see ApiResponse

@@ -45,7 +45,8 @@ public class CommentsController {
      * Получает все комментарии для указанного объявления.
      *
      * @param id идентификатор объявления.
-     * @return {@link ResponseEntity} с объектом {@link Comments}, содержащим список комментариев, и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link Comments}, содержащим список комментариев, и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 404 (Not found) в случае неудачи.
      * @see Comments
      * @see Operation
      * @see ApiResponse
@@ -84,7 +85,8 @@ public class CommentsController {
      * @param id                    идентификатор объявления.
      * @param createOrUpdateComment данные для создания или обновления комментария.
      * @param authentication        объект аутентификации текущего пользователя.
-     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 404 (Not found) в случае неудачи.
      * @see Comment
      * @see CreateOrUpdateComment
      * @see Operation
@@ -129,7 +131,8 @@ public class CommentsController {
      *
      * @param adId      идентификатор объявления.
      * @param commentId идентификатор комментария.
-     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с пустым телом и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) / HTTP 404 (Not found) в случае неудачи.
      * @see Operation
      * @see ApiResponse
      * @see PreAuthorize
@@ -175,7 +178,8 @@ public class CommentsController {
      * @param adId                  идентификатор объявления.
      * @param commentId             идентификатор комментария.
      * @param createOrUpdateComment новые данные для комментария.
-     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK).
+     * @return {@link ResponseEntity} с объектом {@link Comment} и статусом HTTP 200 (OK)
+     * или HTTP 401 (Unauthorized) / HTTP 403 (Forbidden) / HTTP 404 (Not found) в случае неудачи.
      * @see Comment
      * @see CreateOrUpdateComment
      * @see Operation
