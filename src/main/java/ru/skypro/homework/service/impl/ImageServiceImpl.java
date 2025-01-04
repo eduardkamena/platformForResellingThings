@@ -19,6 +19,18 @@ import java.util.UUID;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+/**
+ * Сервис для работы с изображениями.
+ * <p>
+ * Этот класс реализует интерфейс {@link ImageService} и предоставляет методы для выполнения операций
+ * с изображениями, таких как сохранение, получение и удаление изображений.
+ * </p>
+ *
+ * @see Service
+ * @see Slf4j
+ * @see RequiredArgsConstructor
+ * @see ImageService
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,6 +41,14 @@ public class ImageServiceImpl implements ImageService {
     @Value("${image.dir.path}")
     private String imageDir;
 
+    /**
+     * Сохраняет изображение на диск и в базу данных.
+     *
+     * @param image файл изображения.
+     * @param name  имя директории для сохранения изображения.
+     * @return путь к сохраненному изображению.
+     * @throws IOException если возникает ошибка при обработке изображения.
+     */
     @Transactional
     @Override
     public String saveImage(MultipartFile image, String name) throws IOException {
@@ -62,6 +82,13 @@ public class ImageServiceImpl implements ImageService {
         return name + "/image/" + filename;
     }
 
+    /**
+     * Получает изображение по его имени.
+     *
+     * @param name имя изображения.
+     * @return массив байтов, представляющий изображение.
+     * @throws IOException если возникает ошибка при чтении изображения.
+     */
     @Transactional
     @Override
     public byte[] getImage(String name) throws IOException {
@@ -77,6 +104,12 @@ public class ImageServiceImpl implements ImageService {
         return null;
     }
 
+    /**
+     * Удаляет изображение с диска и из базы данных.
+     *
+     * @param path путь к изображению.
+     * @throws ImageNotFoundException если изображение не найдено.
+     */
     @Transactional
     @Override
     public void deleteImage(String path) {

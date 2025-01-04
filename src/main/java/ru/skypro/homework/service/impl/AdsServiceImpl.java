@@ -19,6 +19,19 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Сервис для работы с объявлениями.
+ * <p>
+ * Этот класс реализует интерфейс {@link AdsService} и предоставляет методы для выполнения операций
+ * с объявлениями, таких как получение всех объявлений, добавление, обновление и удаление объявлений,
+ * а также управление изображениями объявлений.
+ * </p>
+ *
+ * @see Service
+ * @see Slf4j
+ * @see RequiredArgsConstructor
+ * @see AdsService
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -30,6 +43,11 @@ public class AdsServiceImpl implements AdsService {
     private final ImageService imageService;
     private final AdsMapper adsMapper;
 
+    /**
+     * Получает все объявления.
+     *
+     * @return объект {@link Ads}, содержащий список всех объявлений и их количество.
+     */
     @Override
     public Ads getAllAds() {
         log.info("getAllAds method from AdsService was invoked");
@@ -44,6 +62,13 @@ public class AdsServiceImpl implements AdsService {
         return ads;
     }
 
+    /**
+     * Получает объявления текущего пользователя.
+     *
+     * @param email email пользователя.
+     * @return объект {@link Ads}, содержащий список объявлений пользователя и их количество.
+     * @throws UserNotFoundException если пользователь с указанным email не найден.
+     */
     @Override
     public Ads getAdsMe(String email) {
         log.info("getAdsMe method from AdsService was invoked");
@@ -59,6 +84,16 @@ public class AdsServiceImpl implements AdsService {
         return ads;
     }
 
+    /**
+     * Добавляет новое объявление.
+     *
+     * @param createOrUpdateAd данные для создания объявления.
+     * @param email            email пользователя, создающего объявление.
+     * @param image            изображение объявления.
+     * @return объект {@link Ad}, представляющий созданное объявление.
+     * @throws IOException           если возникает ошибка при обработке изображения.
+     * @throws UserNotFoundException если пользователь с указанным email не найден.
+     */
     @Override
     public Ad addAd(CreateOrUpdateAd createOrUpdateAd, String email, MultipartFile image) throws IOException {
         log.info("addAd method from AdsService was invoked");
@@ -73,6 +108,13 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toAdDTOFromAdEntity(adEntity);
     }
 
+    /**
+     * Получает информацию об объявлении по его идентификатору.
+     *
+     * @param id идентификатор объявления.
+     * @return объект {@link ExtendedAd}, содержащий расширенную информацию об объявлении.
+     * @throws AdsNotFoundException если объявление с указанным идентификатором не найдено.
+     */
     @Override
     public ExtendedAd getAds(int id) {
         log.info("getAds method from AdsService was invoked");
@@ -84,6 +126,12 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toExtendedAdDTOFromAdEntity(adEntity);
     }
 
+    /**
+     * Удаляет объявление по его идентификатору.
+     *
+     * @param id идентификатор объявления.
+     * @throws AdsNotFoundException если объявление с указанным идентификатором не найдено.
+     */
     @Transactional
     @Override
     public void removeAd(int id) {
@@ -98,6 +146,14 @@ public class AdsServiceImpl implements AdsService {
         adsRepository.delete(adEntity);
     }
 
+    /**
+     * Обновляет информацию об объявлении.
+     *
+     * @param createOrUpdateAd новые данные для объявления.
+     * @param id               идентификатор объявления.
+     * @return объект {@link Ad}, представляющий обновленное объявление.
+     * @throws AdsNotFoundException если объявление с указанным идентификатором не найдено.
+     */
     @Override
     public Ad updateAds(CreateOrUpdateAd createOrUpdateAd, int id) {
         log.info("updateAds method from AdsService was invoked");
@@ -111,6 +167,14 @@ public class AdsServiceImpl implements AdsService {
         return adsMapper.toAdDTOFromAdEntity(adEntity);
     }
 
+    /**
+     * Обновляет изображение объявления.
+     *
+     * @param id    идентификатор объявления.
+     * @param image новое изображение.
+     * @throws IOException          если возникает ошибка при обработке изображения.
+     * @throws AdsNotFoundException если объявление с указанным идентификатором не найдено.
+     */
     @Override
     public void updateImage(int id, MultipartFile image) throws IOException {
         log.info("updateImage method from AdsService was invoked");
@@ -126,6 +190,13 @@ public class AdsServiceImpl implements AdsService {
         log.info("Successfully updated image for Ad with id: {}", id);
     }
 
+    /**
+     * Получает изображение объявления по его имени.
+     *
+     * @param name имя изображения.
+     * @return массив байтов, представляющий изображение.
+     * @throws IOException если возникает ошибка при чтении изображения.
+     */
     @Override
     public byte[] getImage(String name) throws IOException {
         log.info("getImage method from AdsService was invoked " +

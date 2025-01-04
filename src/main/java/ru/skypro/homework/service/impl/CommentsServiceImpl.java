@@ -21,6 +21,18 @@ import ru.skypro.homework.service.CommentsService;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Сервис для работы с комментариями.
+ * <p>
+ * Этот класс реализует интерфейс {@link CommentsService} и предоставляет методы для выполнения операций
+ * с комментариями, таких как получение всех комментариев, добавление, обновление и удаление комментариев.
+ * </p>
+ *
+ * @see Service
+ * @see Slf4j
+ * @see RequiredArgsConstructor
+ * @see CommentsService
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,6 +43,12 @@ public class CommentsServiceImpl implements CommentsService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
+    /**
+     * Получает все комментарии для указанного объявления.
+     *
+     * @param id идентификатор объявления.
+     * @return объект {@link Comments}, содержащий список комментариев и их количество.
+     */
     @Override
     public Comments getComments(int id) {
         log.info("getComments method from CommentsService was invoked");
@@ -45,6 +63,16 @@ public class CommentsServiceImpl implements CommentsService {
         return commentsDTO;
     }
 
+    /**
+     * Добавляет новый комментарий к указанному объявлению.
+     *
+     * @param id                    идентификатор объявления.
+     * @param createOrUpdateComment данные для создания комментария.
+     * @param email                 email пользователя, добавляющего комментарий.
+     * @return объект {@link Comment}, представляющий созданный комментарий.
+     * @throws AdsNotFoundException  если объявление с указанным идентификатором не найдено.
+     * @throws UserNotFoundException если пользователь с указанным email не найден.
+     */
     @Override
     public Comment addComment(int id, CreateOrUpdateComment createOrUpdateComment, String email) {
         log.info("addComment method from CommentsService was invoked");
@@ -65,6 +93,12 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDTOFromCommentEntity(commentEntity);
     }
 
+    /**
+     * Удаляет комментарий по идентификатору объявления и комментария.
+     *
+     * @param adId идентификатор объявления.
+     * @param id   идентификатор комментария.
+     */
     @Override
     @Transactional
     public void deleteComment(int adId, int id) {
@@ -75,6 +109,15 @@ public class CommentsServiceImpl implements CommentsService {
         log.info("Successfully deleted comment with id: {} fot Ad with id: {}", id, adId);
     }
 
+    /**
+     * Обновляет текст комментария.
+     *
+     * @param adId                  идентификатор объявления.
+     * @param id                    идентификатор комментария.
+     * @param createOrUpdateComment новые данные для комментария.
+     * @return объект {@link Comment}, представляющий обновленный комментарий.
+     * @throws CommentNotFoundException если комментарий с указанным идентификатором не найден.
+     */
     @Override
     public Comment updateComment(int adId, int id, CreateOrUpdateComment createOrUpdateComment) {
         log.info("updateComment method from CommentsService was invoked");
@@ -88,6 +131,13 @@ public class CommentsServiceImpl implements CommentsService {
         return commentMapper.toCommentDTOFromCommentEntity(commentEntity);
     }
 
+    /**
+     * Получает email автора комментария.
+     *
+     * @param id идентификатор комментария.
+     * @return email автора комментария.
+     * @throws CommentNotFoundException если комментарий с указанным идентификатором не найден.
+     */
     public String getCommentAuthor(int id) {
         log.info("getCommentAuthor method from CommentsService was invoked");
 
