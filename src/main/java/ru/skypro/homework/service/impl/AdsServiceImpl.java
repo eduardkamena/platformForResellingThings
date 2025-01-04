@@ -92,7 +92,7 @@ public class AdsServiceImpl implements AdsService {
         commentRepository.deleteAllByAd_Id(id);
         AdEntity adEntity = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("Ad not found by id: " + id));
-        imageService.deleteFileIfNotNull(adEntity.getImage());
+        imageService.deleteImage(adEntity.getImage());
 
         log.info("Successfully removed Ad with id: {}", id);
         adsRepository.delete(adEntity);
@@ -117,7 +117,7 @@ public class AdsServiceImpl implements AdsService {
 
         AdEntity adEntity = adsRepository.findById(id)
                 .orElseThrow(() -> new AdsNotFoundException("Ad not found by id: " + id));
-        imageService.deleteFileIfNotNull(adEntity.getImage());
+        imageService.deleteImage(adEntity.getImage());
         log.info("Successfully deleted old image for Ad with id: {}", id);
 
         adEntity.setImage(imageService.saveImage(image, "/ads"));

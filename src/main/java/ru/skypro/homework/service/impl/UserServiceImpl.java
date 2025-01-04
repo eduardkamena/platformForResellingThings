@@ -29,33 +29,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setPassword(NewPassword newPassword, String email) {
+        log.info("setPassword method from UserService was invoked");
+
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             UserEntity userEntity = optionalUser.get();
             if (encoder.matches(newPassword.getCurrentPassword(), userEntity.getPassword())) {
                 userEntity.setPassword(encoder.encode(newPassword.getNewPassword()));
                 userRepository.save(userEntity);
-                log.info("Successfully updated password for user {}", email);
+
+                log.info("Successfully updated password for user: {}", email);
             }
         }
     }
 
     @Override
     public User getUser(String email) {
+        log.info("getUser method from UserService was invoked");
+
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+
+        log.info("Successfully got User with email: {}", email);
         return userMapper.toUserDTOFromUserEntity(userEntity);
     }
 
     @Override
     public User updateUser(User user, String email) {
+        log.info("updateUser method from UserService was invoked");
+
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setPhone(user.getPhone());
         userRepository.save(userEntity);
-        log.info("UserEntity updated");
+
+        log.info("Successfully updated User data with email: {}", email);
         return userMapper.toUserDTOFromUserEntity(userEntity);
     }
 
@@ -64,18 +74,20 @@ public class UserServiceImpl implements UserService {
         log.info("updateAvatar method from UserService was invoked");
 
         UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
-        imageService.deleteFileIfNotNull(userEntity.getImage());
-        log.warn("Successfully delete old User avatar {}", userEntity.getImage());
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+        imageService.deleteImage(userEntity.getImage());
+        log.info("Successfully deleted old avatar with name: {} for User with email: {}", userEntity.getImage(), email);
 
         userEntity.setImage(imageService.saveImage(image, "/users"));
         userRepository.save(userEntity);
 
-        log.info("updateAvatar method successfully update user image {}", userEntity.getImage());
+        log.info("Successfully updated User avatar with name: {}", userEntity.getImage());
     }
 
     @Override
     public byte[] getImage(String name) throws IOException {
+        log.info("getImage method from UserService was invoked " +
+                "and successfully got User avatar with name: {}", name);
         return imageService.getImage(name);
     }
 

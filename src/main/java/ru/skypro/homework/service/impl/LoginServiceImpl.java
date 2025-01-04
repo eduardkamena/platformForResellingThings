@@ -21,6 +21,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean login(String userName, String password) {
+        log.info("login method from LoginService was invoked");
+
         Optional<UserEntity> optionalUser = userRepository.findByEmail(userName);
         if (optionalUser.isEmpty()) {
             log.error("User not found with username: {}", userName);

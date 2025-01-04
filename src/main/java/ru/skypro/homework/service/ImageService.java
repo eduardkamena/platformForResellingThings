@@ -10,6 +10,6 @@ public interface ImageService {
 
     byte[] getImage(String name) throws IOException;
 
-    void deleteFileIfNotNull(String path);
+    void deleteImage(String path);
 
 }

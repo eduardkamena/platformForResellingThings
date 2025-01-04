@@ -23,6 +23,8 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public boolean register(Register register, Role role) {
+        log.info("register method from RegisterService was invoked");
+
         if (userRepository.findByEmail(register.getUsername()).isPresent()) {
             log.error("User already exists with username: {}", register.getUsername());
             throw new UserAlreadyExistException("User already exists with username: " + register.getUsername());
@@ -32,7 +34,8 @@ public class RegisterServiceImpl implements RegisterService {
         userEntity.setPassword(encoder.encode(userEntity.getPassword()));
         userEntity.setRole(role);
         userRepository.save(userEntity);
-        log.info("Registered a new user with username: {}", register.getUsername());
+
+        log.info("Successfully registered a new user with username: {}", register.getUsername());
         return true;
     }
 
