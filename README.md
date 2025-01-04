@@ -177,6 +177,11 @@ spring.datasource.password=rooteditor</code>
 удобный интерфейс для пользователей.
 </p>
 
+<h2>Проблемы и отзывы</h2>
+<p>Если вы столкнулись с какой-то проблемой или у вас есть предложения, 
+пожалуйста откройте тему на <a href="https://github.com/eduardkamena/skypro-diploma_project-ads_online/issues">GitHub Issues</a>
+</p>
+
 <h2>Над проектом работали:</h2>
 <ul>
     <li>Эдуард Каменских — <a href="https://github.com/eduardkamena">eduardkamena</a></li>
