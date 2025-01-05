@@ -54,13 +54,13 @@
     <li>Убедитесь, что у вас установлена Java 11 и PostgreSQL.</li>
     <li>Создайте базу данных в PostgreSQL.</li>
     <li>Настройте подключение к базе данных в файле <code>application.properties</code>:
-<br><pre><code>spring.datasource.url=jdbc:postgresql://localhost:PORT/DATABASE_NAME
+<pre><code>spring.datasource.url=jdbc:postgresql://localhost:PORT/DATABASE_NAME
 spring.datasource.username=USERNAME
 spring.datasource.password=PASSWORD</code>
 </pre>
     </li>
     <li>Запустите проект с помощью Maven:
-<br><pre><code>mvn spring-boot:run</code></pre>
+<pre><code>mvn spring-boot:run</code></pre>
     </li>
 </ol>
 
