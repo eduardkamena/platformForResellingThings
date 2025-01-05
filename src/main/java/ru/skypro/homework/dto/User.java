@@ -10,6 +10,23 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * Класс DTO, представляющий пользователя системы.
+ * <p>
+ * Этот класс содержит информацию о пользователе, такую как идентификатор, логин (email),
+ * имя, фамилия, телефон, роль и ссылку на аватар. Поля валидируются с использованием аннотаций
+ * для проверки корректности введенных данных.
+ * </p>
+ *
+ * @see Data
+ * @see Schema
+ * @see NotBlank
+ * @see Size
+ * @see Email
+ * @see Pattern
+ * @see Enumerated
+ * @see Role
+ */
 @Data
 public class User {
 

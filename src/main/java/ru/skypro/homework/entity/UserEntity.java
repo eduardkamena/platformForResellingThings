@@ -5,6 +5,21 @@ import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
 
+/**
+ * Класс Entity, представляющий сущность пользователя в базе данных.
+ * <p>
+ * Этот класс отображает таблицу "users" в базе данных и содержит информацию о пользователе,
+ * такую как идентификатор, email (логин), пароль, имя, фамилия, телефон, ссылка на аватар и роль.
+ * </p>
+ *
+ * @see Entity
+ * @see Data
+ * @see Id
+ * @see GeneratedValue
+ * @see Column
+ * @see Enumerated
+ * @see Role
+ */
 @Data
 @Entity(name = "users")
 public class UserEntity {

@@ -7,6 +7,24 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 
+/**
+ * Класс DTO, представляющий данные для регистрации нового пользователя.
+ * <p>
+ * Этот класс содержит информацию, необходимую для регистрации пользователя,
+ * такую как логин (email), пароль, имя, фамилия, телефон и роль. Поля валидируются
+ * с использованием аннотаций для проверки корректности введенных данных.
+ * </p>
+ *
+ * @see Data
+ * @see Schema
+ * @see NotBlank
+ * @see Size
+ * @see Email
+ * @see Pattern
+ * @see Enumerated
+ * @see Role
+ * @see NotNull
+ */
 @Data
 public class Register {
 
