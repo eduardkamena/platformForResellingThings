@@ -52,16 +52,15 @@
 <h3>Запуск бэкенда</h3>
 <ol>
     <li>Убедитесь, что у вас установлена Java 11 и PostgreSQL.</li>
-    <li>Создайте базу данных <code>ads_db</code> в PostgreSQL.</li>
-    <li>
-Настройте подключение к базе данных в файле <code>application.properties</code>:
-<pre><code>spring.datasource.url=jdbc:postgresql://localhost:5432/ads_db
-spring.datasource.username=db_editor
-spring.datasource.password=rooteditor</code>
+    <li>Создайте базу данных в PostgreSQL.</li>
+    <li>Настройте подключение к базе данных в файле <code>application.properties</code>:
+<pre><code>spring.datasource.url=jdbc:postgresql://localhost:PORT/DATABASE_NAME
+spring.datasource.username=USERNAME
+spring.datasource.password=PASSWORD</code>
 </pre>
     </li>
     <li>Запустите проект с помощью Maven:
-    <pre><code>mvn spring-boot:run</code></pre>
+<pre><code>mvn spring-boot:run</code></pre>
     </li>
 </ol>
 
@@ -135,7 +134,7 @@ spring.datasource.password=rooteditor</code>
     <li><code>UserRepository</code> — работа с данными пользователей.</li>
 </ul>
 
-<h3>Сущности:</h3>
+<h3>Сущности (Entity):</h3>
 <ul>
     <li>
         <code>AdEntity</code>, 
@@ -145,7 +144,7 @@ spring.datasource.password=rooteditor</code>
     </li>
 </ul>
 
-<h3>DTO:</h3>
+<h3>Объекты (DTO):</h3>
 <ul>
     <li>
         <code>Ad</code>, 
@@ -179,7 +178,7 @@ spring.datasource.password=rooteditor</code>
 
 <h2>Проблемы и отзывы</h2>
 <p>Если вы столкнулись с какой-то проблемой или у вас есть предложения, 
-пожалуйста откройте тему на <a href="https://github.com/eduardkamena/skypro-diploma_project-ads_online/issues">GitHub Issues</a>
+пожалуйста, напишите в <a href="https://github.com/eduardkamena/skypro-diploma_project-ads_online/issues">GitHub Issues</a>
 </p>
 
 <h2>Над проектом работали:</h2>
