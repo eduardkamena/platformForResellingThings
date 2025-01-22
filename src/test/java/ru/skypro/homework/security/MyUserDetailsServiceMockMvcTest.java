@@ -77,9 +77,7 @@ public class MyUserDetailsServiceMockMvcTest {
         when(userRepository.findByEmail("unknown@mail.ru")).thenReturn(Optional.empty());
 
         // when & then
-        assertThrows(UserNotFoundException.class, () -> {
-            myUserDetailsService.loadUserByUsername("unknown@mail.ru");
-        });
+        assertThrows(UserNotFoundException.class, () -> myUserDetailsService.loadUserByUsername("unknown@mail.ru"));
     }
 
 }

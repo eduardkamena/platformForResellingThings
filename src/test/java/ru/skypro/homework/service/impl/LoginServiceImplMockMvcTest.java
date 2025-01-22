@@ -61,9 +61,7 @@ public class LoginServiceImplMockMvcTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // when & then
-        assertThrows(UserNotFoundException.class, () -> {
-            loginService.login(email, "password");
-        });
+        assertThrows(UserNotFoundException.class, () -> loginService.login(email, "password"));
         verify(userRepository, times(1)).findByEmail(email);
         verify(encoder, never()).matches(any(), any());
     }

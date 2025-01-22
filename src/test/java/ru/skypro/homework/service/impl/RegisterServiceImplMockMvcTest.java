@@ -80,9 +80,7 @@ public class RegisterServiceImplMockMvcTest {
         when(userRepository.findByEmail(register.getUsername())).thenReturn(Optional.of(userEntity));
 
         // when & then
-        assertThrows(UserAlreadyExistException.class, () -> {
-            registerService.register(register, Role.USER);
-        });
+        assertThrows(UserAlreadyExistException.class, () -> registerService.register(register, Role.USER));
         verify(userRepository, times(1)).findByEmail(register.getUsername());
         verify(userMapper, never()).toUserEntityFromRegisterDTO(any());
         verify(encoder, never()).encode(any());
